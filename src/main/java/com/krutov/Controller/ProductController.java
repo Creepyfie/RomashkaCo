@@ -42,5 +42,8 @@ public class ProductController {
         productDao.delete(id);
     }
 
-
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception e){
+        return e.getMessage();
+    }
 }

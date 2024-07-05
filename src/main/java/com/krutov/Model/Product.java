@@ -1,6 +1,5 @@
 package com.krutov.Model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
