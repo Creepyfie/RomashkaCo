@@ -1,4 +1,4 @@
-package com.krutov.Model;
+package com.krutov.RomashkaKo.Model;
 
 import lombok.Value;
 

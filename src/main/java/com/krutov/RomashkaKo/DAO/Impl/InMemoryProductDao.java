@@ -1,7 +1,7 @@
-package com.krutov.DAO.Impl;
+package com.krutov.RomashkaKo.DAO.Impl;
 
-import com.krutov.DAO.ProductDao;
-import com.krutov.Model.Product;
+import com.krutov.RomashkaKo.DAO.ProductDao;
+import com.krutov.RomashkaKo.Model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -18,9 +18,9 @@ public class InMemoryProductDao implements ProductDao {
     private final AtomicLong counter = new AtomicLong();
 
     @Override
-    public long create(String productName, String description, Double price, Boolean available) throws StringIndexOutOfBoundsException {
+    public long create(String productName, String description, Double price, Boolean available){
 
-        if (productName.length() < 256 || description.length() < 4097) {
+        if (productName.length() < 256 && description.length() < 4097) {
 
             long id = counter.incrementAndGet();
             Product productToAdd = new Product(id, productName, description, price, available);
@@ -34,7 +34,7 @@ public class InMemoryProductDao implements ProductDao {
 
     @Override
     public void update(long id, Product editProduct) {
-        if (editProduct.getName().length() < 256 || editProduct.getDescription().length() < 4097) {
+        if (editProduct.getName().length() < 256 && editProduct.getDescription().length() < 4097) {
             products.put(id, editProduct);
         } else {
             throw new StringIndexOutOfBoundsException();
