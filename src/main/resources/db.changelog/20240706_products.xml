@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <changeSet author="creepyfie" id="202400607_products">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="products"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="products">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text(256)" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text(4096)" remarks="Описание товара">
+                <constraints nullable="true"/>
+            </column>
+            <column name="price" type="numeric" defaultValueNumeric="0" remarks="Стоимость товара">
+                <constraints nullable="false"/>
+            </column>
+            <column name="available" type="boolean" defaultValueBoolean="true" remarks="Наличие товара">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <comment>Initial commit</comment>
+    </changeSet>
+</databaseChangeLog>
