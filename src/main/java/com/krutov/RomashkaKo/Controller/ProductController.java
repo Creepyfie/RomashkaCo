@@ -19,7 +19,12 @@ public class ProductController {
                               @RequestParam(value = "description", required = false) String description,
                               @RequestParam(name = "price", required = false, defaultValue = "0") Double price,
                               @RequestParam(name = "available", required = false, defaultValue = "false") Boolean available) throws StringIndexOutOfBoundsException {
-        return productDao.create(name, description, price, available);
+        if (name.length() < 256 && description.length() < 4097) {
+            return productDao.create(name, description, price, available);
+        } else {
+        throw new StringIndexOutOfBoundsException();
+    }
+
     }
 
     @GetMapping("/{id}")
@@ -34,16 +39,15 @@ public class ProductController {
 
     @PatchMapping
     public void updateProduct(@RequestParam(value = "id") long id,@RequestBody Product editProduct) {
+        if (editProduct.getName().length() < 256 && editProduct.getDescription().length() < 4097) {
         productDao.update(id, editProduct);
+        } else {
+            throw new StringIndexOutOfBoundsException();
+        }
     }
 
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable("id") long id) {
         productDao.delete(id);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public String handleException(Exception e){
-        return e.getMessage();
     }
 }

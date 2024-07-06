@@ -4,6 +4,7 @@ import com.krutov.RomashkaKo.Model.Product;
 import com.krutov.RomashkaKo.DAO.Impl.InMemoryProductDao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
