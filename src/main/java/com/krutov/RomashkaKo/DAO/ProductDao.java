@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProductDao {
 
-    long create(String productName, String description, Double price, Boolean available) throws StringIndexOutOfBoundsException;
+    long create(Product product) throws StringIndexOutOfBoundsException;
 
     void update(long id, Product editProduct);
 

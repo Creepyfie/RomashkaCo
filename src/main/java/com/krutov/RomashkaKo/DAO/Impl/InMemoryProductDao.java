@@ -18,10 +18,9 @@ public class InMemoryProductDao implements ProductDao {
     private final AtomicLong counter = new AtomicLong();
 
     @Override
-    public long create(String productName, String description, Double price, Boolean available){
+    public long create(Product productToAdd){
 
             long id = counter.incrementAndGet();
-            Product productToAdd = new Product(id, productName, description, price, available);
 
             products.put(id, productToAdd);
             return id;

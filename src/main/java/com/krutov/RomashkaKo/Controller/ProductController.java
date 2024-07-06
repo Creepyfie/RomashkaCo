@@ -2,7 +2,9 @@ package com.krutov.RomashkaKo.Controller;
 
 import com.krutov.RomashkaKo.DAO.ProductDao;
 import com.krutov.RomashkaKo.Model.Product;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,16 +17,13 @@ public class ProductController {
     private final ProductDao productDao;
 
     @PostMapping
-    public Long createProduct(@RequestParam(value = "name") String name,
-                              @RequestParam(value = "description", required = false) String description,
-                              @RequestParam(name = "price", required = false, defaultValue = "0") Double price,
-                              @RequestParam(name = "available", required = false, defaultValue = "false") Boolean available) throws StringIndexOutOfBoundsException {
-        if (name.length() < 256 && description.length() < 4097) {
-            return productDao.create(name, description, price, available);
-        } else {
-        throw new StringIndexOutOfBoundsException();
-    }
-
+    public Long createProduct(@RequestBody @Valid Product editProduct, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new StringIndexOutOfBoundsException();
+        }
+        else {
+            return productDao.create(editProduct);
+        }
     }
 
     @GetMapping("/{id}")
@@ -33,16 +32,19 @@ public class ProductController {
     }
 
     @GetMapping
-    List<Product> getAllProducts(){
+    List<Product> getAllProducts() {
         return productDao.getAllProducts();
     }
 
     @PatchMapping
-    public void updateProduct(@RequestParam(value = "id") long id,@RequestBody Product editProduct) {
-        if (editProduct.getName().length() < 256 && editProduct.getDescription().length() < 4097) {
-        productDao.update(id, editProduct);
-        } else {
+    public void updateProduct(@RequestParam(value = "id") long id,
+                              @RequestBody @Valid Product editProduct,
+                              BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
             throw new StringIndexOutOfBoundsException();
+        } else {
+            productDao.update(id, editProduct);
         }
     }
 

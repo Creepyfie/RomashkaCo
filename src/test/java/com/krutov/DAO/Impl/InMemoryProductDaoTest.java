@@ -4,7 +4,6 @@ import com.krutov.RomashkaKo.Model.Product;
 import com.krutov.RomashkaKo.DAO.Impl.InMemoryProductDao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ class InMemoryProductDaoTest {
         Product productExpected = new Product(1L,"Jacoco","first product", 1.0d, false);
 
         //Act
-        long id = productDao.create("Jacoco","first product", 1.0d, false);
+        long id = productDao.create(new Product(1L,"Jacoco","first product", 1.0d, false));
         Product actual = productDao.products.get(id);
 
         //Assert
@@ -31,7 +30,7 @@ class InMemoryProductDaoTest {
         //Arrange
         InMemoryProductDao productDao = new InMemoryProductDao();
         Product productExpected = new Product(1L,"JacocoUpdated","first product", 1.0d, false);
-        long id = productDao.create("Jacoco","first product", 1.0d, false);
+        long id = productDao.create(new Product(1L,"Jacoco","first product", 1.0d, false));
 
         //Act
         productDao.update(id, new Product(1L,"JacocoUpdated","first product", 1.0d, false));
@@ -46,7 +45,7 @@ class InMemoryProductDaoTest {
         //Arrange
         InMemoryProductDao productDao = new InMemoryProductDao();
         Product productToDelete = new Product(1L,"JacocoUpdated","first product", 1.0d, false);
-        long id = productDao.create("Jacoco","first product", 1.0d, false);
+        long id = productDao.create(productToDelete);
 
         //Act
         productDao.delete(id);
@@ -60,12 +59,14 @@ class InMemoryProductDaoTest {
         //Arrange
         InMemoryProductDao productDao = new InMemoryProductDao();
 
+        Product product1 = new Product(1L, "Jacoco","first product", 1.0d, false);
         Product productExpected = new Product(2L,"JacocoTwo","second product", 2.0d, true);
+        Product product3 = new Product(3L, "JacocoThree","third product", 3.0d, true);
 
         //Act
-        productDao.create("Jacoco","first product", 1.0d, false);
-        long id =productDao.create("JacocoTwo","second product", 2.0d, true);
-        productDao.create("JacocoThree","third product", 3.0d, true);
+        productDao.create(product1);
+        long id =productDao.create(productExpected);
+        productDao.create(product3);
 
         Product actual = productDao.getById(id);
 
@@ -88,9 +89,9 @@ class InMemoryProductDaoTest {
         expectedList.add(product3);
 
         //Act
-        productDao.create("Jacoco","first product", 1.0d, false);
-        productDao.create("JacocoTwo","second product", 2.0d, true);
-        productDao.create("JacocoThree","third product", 3.0d, true);
+        productDao.create(product1);
+        productDao.create(product2);
+        productDao.create(product3);
 
         List<Product> actualList = productDao.getAllProducts();
 
