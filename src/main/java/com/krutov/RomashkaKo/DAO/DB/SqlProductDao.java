@@ -3,6 +3,7 @@ package com.krutov.RomashkaKo.DAO.DB;
 import com.krutov.RomashkaKo.DAO.ProductDao;
 import com.krutov.RomashkaKo.Model.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
+@Primary
 @RequiredArgsConstructor
 public class SqlProductDao implements ProductDao {
 

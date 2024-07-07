@@ -13,7 +13,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="text(256)" >
+            <column name="name" type="text(255)"  remarks="Название товара">
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="text(4096)" remarks="Описание товара">
