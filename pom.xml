@@ -92,7 +92,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.krutov.RomashkaKoApplication</mainClass>
+					<mainClass>com.krutov.RomashkaKoApplication.java</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

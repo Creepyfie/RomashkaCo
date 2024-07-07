@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: romaska-postgres
+    image: postgres:16.1-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 140502
+    volumes:
+        - romaskaco-postgres:/data/postgres
+    ports:
+      - "5433:5432"
+
+  app:
+    build: ./
+    container_name: 'romaska-app'
+    ports:
+      - 8080:8080
+
+volumes:
+  romaskaco-postgres:
