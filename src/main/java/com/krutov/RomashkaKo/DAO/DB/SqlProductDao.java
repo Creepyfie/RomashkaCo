@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-@Primary
 @RequiredArgsConstructor
 public class SqlProductDao implements ProductDao {
 

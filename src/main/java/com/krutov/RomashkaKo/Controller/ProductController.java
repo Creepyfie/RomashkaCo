@@ -1,6 +1,5 @@
 package com.krutov.RomashkaKo.Controller;
 
-import com.krutov.RomashkaKo.DAO.DB.SqlProductDao;
 import com.krutov.RomashkaKo.DAO.ProductDao;
 import com.krutov.RomashkaKo.Model.Product;
 import jakarta.validation.Valid;

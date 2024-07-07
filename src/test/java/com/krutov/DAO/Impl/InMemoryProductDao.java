@@ -1,4 +1,4 @@
-package com.krutov.RomashkaKo.DAO.Impl;
+package com.krutov.DAO.Impl;
 
 import com.krutov.RomashkaKo.DAO.ProductDao;
 import com.krutov.RomashkaKo.Model.Product;
