@@ -6,8 +6,11 @@ import com.krutov.romashka.co.dao.DB.SqlFilters;
 import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.model.Product;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/prod")
 @RequiredArgsConstructor
+@Validated
 public class ProductController {
 
     private final ProductDao productDao;
@@ -37,14 +41,15 @@ public class ProductController {
 
     @GetMapping
     List<Product> getAllProducts(
-            @RequestParam(name = "filterName", required = false) String filterName,
-            @RequestParam(name = "filterPrice", required = false) Double filterPrice,
+            @RequestParam (name = "filterName", required = false) @Size(max = 255) String filterName,
+            @RequestParam (name = "filterPrice", required = false) @Min(0) Double filterPrice,
             @RequestParam(name = "filterPriceSIgn", required = false) String filterSign,
             @RequestParam(name = "filterAvailable", required = false) Double filterAv,
             @RequestParam(name = "sortByNameDirection", required = false) String nameDirection,
             @RequestParam(name = "sortByPriceDirection", required = false) String priceDirection,
             @RequestParam(name = "limit", required = false) Integer limit,
             @RequestParam(name = "offset", required = false) Integer offset) {
+
         List<SortData> sortDataList = new ArrayList<>();
         if (!nameDirection.isEmpty()){
             sortDataList.add(new SortData("name",nameDirection));

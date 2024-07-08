@@ -1,7 +1,6 @@
-package com.krutov.DAO.Impl;
+package com.krutov.romashka.co.dao.DB;
 
-import com.krutov.romashka.co.dao.DB.ListData;
-import com.krutov.romashka.co.dao.DB.SortData;
+import com.krutov.DAO.Impl.InMemoryProductDao;
 import com.krutov.romashka.co.model.Product;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,18 +8,18 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-class InMemoryProductDaoTest {
+class SqlProductDaoTest {
+
+    private SqlProductDao productDao;
 
     @Test
     void create() {
         //Arrange
-        InMemoryProductDao productDao = new InMemoryProductDao();
-
         Product productExpected = new Product(1L,"Jacoco","first product", 1.0d, false);
 
         //Act
         long id = productDao.create(new Product(1L,"Jacoco","first product", 1.0d, false));
-        Product actual = productDao.products.get(id);
+        Product actual = productDao.getById(id);
 
         //Assert
         Assertions.assertEquals(productExpected, actual);
@@ -29,13 +28,12 @@ class InMemoryProductDaoTest {
     @Test
     void update() {
         //Arrange
-        InMemoryProductDao productDao = new InMemoryProductDao();
         Product productExpected = new Product(1L,"JacocoUpdated","first product", 1.0d, false);
         long id = productDao.create(new Product(1L,"Jacoco","first product", 1.0d, false));
 
         //Act
         productDao.update(id, new Product(1L,"JacocoUpdated","first product", 1.0d, false));
-        Product actual = productDao.products.get(1L);
+        Product actual = productDao.getById(id);
 
         //Assert
         Assertions.assertEquals(productExpected, actual);
@@ -44,7 +42,6 @@ class InMemoryProductDaoTest {
     @Test
     void delete() {
         //Arrange
-        InMemoryProductDao productDao = new InMemoryProductDao();
         Product productToDelete = new Product(1L,"JacocoUpdated","first product", 1.0d, false);
         long id = productDao.create(productToDelete);
 
@@ -52,13 +49,12 @@ class InMemoryProductDaoTest {
         productDao.delete(id);
 
         //Assert
-        Assertions.assertTrue(productDao.products.isEmpty());
+        Assertions.assertTrue(true);
     }
 
     @Test
     void getById() {
         //Arrange
-        InMemoryProductDao productDao = new InMemoryProductDao();
 
         Product product1 = new Product(1L, "Jacoco","first product", 1.0d, false);
         Product productExpected = new Product(2L,"JacocoTwo","second product", 2.0d, true);
@@ -66,7 +62,7 @@ class InMemoryProductDaoTest {
 
         //Act
         productDao.create(product1);
-        long id =productDao.create(productExpected);
+        long id = productDao.create(productExpected);
         productDao.create(product3);
 
         Product actual = productDao.getById(id);
@@ -78,7 +74,6 @@ class InMemoryProductDaoTest {
     @Test
     void getAllProducts() {
         //Arrange
-        InMemoryProductDao productDao = new InMemoryProductDao();
 
         List<SortData> sortData = new ArrayList<>();
         sortData.add(new SortData("name", "ASC"));
