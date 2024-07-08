@@ -1,5 +1,7 @@
 package com.krutov.DAO.Impl;
 
+import com.krutov.romashka.co.dao.DB.ListData;
+import com.krutov.romashka.co.dao.DB.SortData;
 import com.krutov.romashka.co.model.Product;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -78,6 +80,11 @@ class InMemoryProductDaoTest {
         //Arrange
         InMemoryProductDao productDao = new InMemoryProductDao();
 
+        List<SortData> sortData = new ArrayList<>();
+        sortData.add(new SortData("name", "ASC"));
+
+        ListData listData = new ListData(4, 1,sortData);
+
         List<Product> expectedList = new ArrayList<>();
         Product product1 = new Product(1L,"Jacoco","first product", 1.0d, false);
         Product product2 = new Product(2L,"JacocoTwo","second product", 2.0d, true);
@@ -92,7 +99,7 @@ class InMemoryProductDaoTest {
         productDao.create(product2);
         productDao.create(product3);
 
-        List<Product> actualList = productDao.getAllProducts();
+        List<Product> actualList = productDao.getAllProducts(listData,"");
 
         //Assert
         Assertions.assertEquals(expectedList, actualList);

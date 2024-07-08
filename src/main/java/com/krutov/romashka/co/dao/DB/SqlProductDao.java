@@ -93,11 +93,16 @@ public class SqlProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(ListData listData, String sqlFilters) {
 
         String sql = """
                 SELECT * FROM products
                 """;
+
+
+        String sqlWithFilters = new StringBuilder().append(sql).append(sqlFilters).toString();
+        PagingSortingUtil.addSortingAndPaging(sqlWithFilters, listData);
+
 
         return jdbc.query(sql, rowMapper);
     }

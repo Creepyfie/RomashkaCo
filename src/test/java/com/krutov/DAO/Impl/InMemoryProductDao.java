@@ -1,5 +1,7 @@
 package com.krutov.DAO.Impl;
 
+import com.krutov.romashka.co.dao.DB.ListData;
+import com.krutov.romashka.co.dao.DB.SqlFilters;
 import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.model.Product;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +44,7 @@ public class InMemoryProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(ListData listData, String sqlFilters) {
         return products.values().stream().toList();
     }
 }

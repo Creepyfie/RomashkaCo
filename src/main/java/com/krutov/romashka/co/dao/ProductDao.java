@@ -1,5 +1,7 @@
 package com.krutov.romashka.co.dao;
 
+import com.krutov.romashka.co.dao.DB.ListData;
+import com.krutov.romashka.co.dao.DB.SqlFilters;
 import com.krutov.romashka.co.model.Product;
 
 import java.util.List;
@@ -14,5 +16,5 @@ public interface ProductDao {
 
     Product getById(long id);
 
-    List<Product> getAllProducts();
+    List<Product> getAllProducts(ListData listData, String sqlFilters);
 }
