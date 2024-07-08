@@ -10,13 +10,19 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - romaska_db:/data/postgres
+    ports:
+      - 5433:5432
 
   app:
     build: ./
     depends_on:
       - postgresdb
     container_name: 'romaska-app'
+    environment:
+      POSTGRES_HOST: postgresdb
     ports:
       - 8080:8080
+
+
 volumes:
   romaska_db:
