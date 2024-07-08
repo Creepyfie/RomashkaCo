@@ -1,4 +1,4 @@
-package com.krutov.RomashkaKo.Exeption;
+package com.krutov.romashkaKo.exeption;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;

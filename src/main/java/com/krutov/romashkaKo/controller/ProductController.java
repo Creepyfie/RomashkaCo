@@ -1,7 +1,7 @@
-package com.krutov.RomashkaKo.Controller;
+package com.krutov.romashkaKo.controller;
 
-import com.krutov.RomashkaKo.DAO.ProductDao;
-import com.krutov.RomashkaKo.Model.Product;
+import com.krutov.romashkaKo.dao.ProductDao;
+import com.krutov.romashkaKo.model.Product;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @PatchMapping
-    public void updateProduct(@RequestParam(value = "id") long id,
+    public void updateProduct(@RequestParam(name = "id") long id,
                               @RequestBody @Valid Product editProduct,
                               BindingResult bindingResult) {
 

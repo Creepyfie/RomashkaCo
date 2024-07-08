@@ -1,10 +1,7 @@
-package com.krutov.RomashkaKo;
+package com.krutov.romashkaKo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootApplication
 public class RomashkaKoApplication {
