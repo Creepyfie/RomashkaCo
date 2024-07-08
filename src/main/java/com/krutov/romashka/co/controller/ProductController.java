@@ -32,12 +32,14 @@ public class ProductController {
     }
 
     @GetMapping
-    List<Product> getAllProducts() {
+    List<Product> getAllProducts(
+            @RequestParam(name = "filterName", required = false) String filterName,
+            @RequestParam(name = "filterPrice", required = false) Double filterPrice) {
         return productDao.getAllProducts();
     }
 
     @PatchMapping
-    public void updateProduct(@RequestParam(value = "id") long id,
+    public void updateProduct(@RequestParam(name = "id") long id,
                               @RequestBody @Valid Product editProduct,
                               BindingResult bindingResult) {
 
