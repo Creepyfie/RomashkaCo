@@ -1,7 +1,7 @@
-package com.krutov.RomashkaKo.Controller;
+package com.krutov.romashka.co.controller;
 
-import com.krutov.RomashkaKo.DAO.ProductDao;
-import com.krutov.RomashkaKo.Model.Product;
+import com.krutov.romashka.co.dao.ProductDao;
+import com.krutov.romashka.co.model.Product;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;

@@ -1,9 +1,8 @@
-package com.krutov.RomashkaKo.DAO.DB;
+package com.krutov.romashka.co.dao.DB;
 
-import com.krutov.RomashkaKo.DAO.ProductDao;
-import com.krutov.RomashkaKo.Model.Product;
+import com.krutov.romashka.co.dao.ProductDao;
+import com.krutov.romashka.co.model.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;

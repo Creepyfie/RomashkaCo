@@ -1,7 +1,7 @@
 package com.krutov.DAO.Impl;
 
-import com.krutov.RomashkaKo.DAO.ProductDao;
-import com.krutov.RomashkaKo.Model.Product;
+import com.krutov.romashka.co.dao.ProductDao;
+import com.krutov.romashka.co.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

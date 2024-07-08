@@ -1,4 +1,4 @@
-package com.krutov.RomashkaKo.Model;
+package com.krutov.romashka.co.model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;

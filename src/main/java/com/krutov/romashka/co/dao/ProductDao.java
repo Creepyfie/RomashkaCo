@@ -1,6 +1,6 @@
-package com.krutov.RomashkaKo.DAO;
+package com.krutov.romashka.co.dao;
 
-import com.krutov.RomashkaKo.Model.Product;
+import com.krutov.romashka.co.model.Product;
 
 import java.util.List;
 

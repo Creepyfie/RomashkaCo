@@ -1,6 +1,6 @@
 package com.krutov.DAO.Impl;
 
-import com.krutov.RomashkaKo.Model.Product;
+import com.krutov.romashka.co.model.Product;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
