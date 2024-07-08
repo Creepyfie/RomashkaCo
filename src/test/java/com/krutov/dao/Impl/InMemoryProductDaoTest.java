@@ -1,7 +1,7 @@
-package com.krutov.DAO.Impl;
+package com.krutov.dao.Impl;
 
-import com.krutov.RomashkaKo.Model.Product;
-import com.krutov.RomashkaKo.DAO.Impl.InMemoryProductDao;
+import com.krutov.RomashkaKo.model.Product;
+import com.krutov.RomashkaKo.dao.Impl.InMemoryProductDao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

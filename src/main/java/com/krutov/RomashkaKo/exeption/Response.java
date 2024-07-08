@@ -1,4 +1,4 @@
-package com.krutov.RomashkaKo.Exeption;
+package com.krutov.RomashkaKo.exeption;
 
 import lombok.Value;
 import org.springframework.http.HttpStatusCode;
