@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @PatchMapping
-    public void updateProduct(@RequestParam(value = "id") long id,
+    public void updateProduct(@RequestParam(name = "id") long id,
                               @RequestBody @Valid Product editProduct,
                               BindingResult bindingResult) {
 
