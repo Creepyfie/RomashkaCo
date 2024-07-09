@@ -1,10 +1,11 @@
-package com.krutov.romashka.co.dao.DB;
+package com.krutov.romashka.co.dao.util;
 
 import com.google.common.collect.ImmutableList;
 import io.micrometer.common.util.StringUtils;
 import lombok.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Value
@@ -18,10 +19,6 @@ public class SqlFilters {
         this.predicate = predicate;
     }
 
-    public boolean isEmpty() {
-        return StringUtils.isBlank(predicate);
-    }
-
     public String makeWhereClause() {
         return StringUtils.isNotEmpty(predicate) ? "\nWHERE " + predicate : "";
     }
@@ -30,7 +27,7 @@ public class SqlFilters {
         return new Builder();
     }
 
-    public  static class Builder {
+    public static class Builder {
         private final MapSqlParameterSource params = new MapSqlParameterSource();
         private final ImmutableList.Builder<String> predicateBuilder = ImmutableList.builder();
 
@@ -79,17 +76,6 @@ public class SqlFilters {
                 predicateBuilder.add(columnName + " > " + param(paramName));
                 params.addValue(paramName, value);
             }
-            return this;
-        }
-
-
-        public Builder isNull(String columnName) {
-            predicateBuilder.add(columnName + " IS NULL");
-            return this;
-        }
-
-        public Builder isNotNull(String columnName) {
-            predicateBuilder.add(columnName + " IS NOT NULL");
             return this;
         }
 

@@ -1,4 +1,4 @@
-package com.krutov.romashka.co.dao.DB;
+package com.krutov.romashka.co.dao.impl;
 
 import com.krutov.dao.Impl.InMemoryProductDao;
 import com.krutov.romashka.co.IntegrationTests;
@@ -8,12 +8,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class SqlProductDaoTest extends IntegrationTests {
+/**
+ * Тесты прогоняются на две реализации: InMemDao и SqlDao
+ */
+public class ProductDaoTest extends IntegrationTests {
 
-        @Autowired
-        private ProductDao productDao;
+    @Autowired
+    private ProductDao productDao;
 
-        private InMemoryProductDao inMemoryProductDao;
+    private final InMemoryProductDao inMemoryProductDao = new InMemoryProductDao();
 
     @Nested
     class SqlDaoTest extends ProductDaoTestCases {
@@ -22,9 +25,10 @@ public class SqlProductDaoTest extends IntegrationTests {
         void setup() {
             clearTables("products");
         }
+
         @Override
         ProductDao getDao() {
-            return SqlProductDaoTest.this.productDao;
+            return productDao;
         }
     }
 
@@ -35,9 +39,10 @@ public class SqlProductDaoTest extends IntegrationTests {
         void setup() {
             inMemoryProductDao.clear();
         }
+
         @Override
         ProductDao getDao() {
-            return SqlProductDaoTest.this.inMemoryProductDao;
+            return inMemoryProductDao;
         }
     }
 }

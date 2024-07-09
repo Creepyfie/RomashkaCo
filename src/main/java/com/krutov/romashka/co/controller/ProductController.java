@@ -1,19 +1,24 @@
 package com.krutov.romashka.co.controller;
 
-import com.krutov.romashka.co.dao.DB.Direction;
-import com.krutov.romashka.co.dao.DB.ListData;
-import com.krutov.romashka.co.dao.DB.SortData;
-import com.krutov.romashka.co.dao.DB.SqlFilters;
 import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
+import com.krutov.romashka.co.util.Direction;
+import com.krutov.romashka.co.util.ListData;
+import com.krutov.romashka.co.util.SortData;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +29,9 @@ import java.util.List;
 @Validated
 public class ProductController {
 
+    /**
+     * Слой сервисов не заводил, но понимаю, что он должен быть.
+     */
     private final ProductDao productDao;
 
     @PostMapping
@@ -42,11 +50,11 @@ public class ProductController {
 
     @GetMapping
     List<Product> getAllProducts(
-            ProductSearchRequest request,
-            @RequestParam(name = "sortByNameDirection", required = false) Direction nameDirection,
-            @RequestParam(name = "sortByPriceDirection", required = false) Direction priceDirection,
-            @RequestParam(name = "limit", required = false, defaultValue = "1000000") Integer limit,
-            @RequestParam(name = "offset", required = false, defaultValue = "0") Integer offset
+        @Valid ProductSearchRequest request,
+        @RequestParam(name = "sortByNameDirection", required = false) Direction nameDirection,
+        @RequestParam(name = "sortByPriceDirection", required = false) Direction priceDirection,
+        @RequestParam(name = "limit", required = false, defaultValue = "1000000") Integer limit,
+        @RequestParam(name = "offset", required = false, defaultValue = "0") Integer offset
     ) {
 
         List<SortData> sortDataList = new ArrayList<>();
@@ -58,7 +66,7 @@ public class ProductController {
         }
         ListData listData = new ListData(limit, offset, sortDataList);
 
-        return productDao.getAllProducts(request, listData);
+        return productDao.searchProduct(request, listData);
     }
 
     @PatchMapping
