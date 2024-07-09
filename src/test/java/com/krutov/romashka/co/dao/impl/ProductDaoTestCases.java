@@ -45,7 +45,7 @@ public abstract class ProductDaoTestCases {
 
         //Act
         Product updatedProduct = oldProduct.toBuilder()
-            .name("Jacoco")
+            .name("Jacoca")
             .description("second product")
             .price(BigDecimal.valueOf(1000.0))
             .available(true)
