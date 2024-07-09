@@ -9,9 +9,25 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import static java.util.Collections.emptyMap;
 
-@SpringBootTest
-public abstract class RomashkaCoApplicationTests {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = RomashkaCoApplication.class)
+@AutoConfigureMockMvc
+@ExtendWith(PostgresContainerExtension.class)
+
+public abstract class IntegrationTests {
+
+	@Autowired
+	protected NamedParameterJdbcOperations jdbcOperations;
+
+	protected void clearTables(String... tableNames) {
+		for (String tableName : tableNames) {
+			jdbcOperations.update("DELETE FROM " + tableName, emptyMap());
+		}
+	}
+
 	@Test
 	void contextLoads() {
 	}
+
+
+
 }
