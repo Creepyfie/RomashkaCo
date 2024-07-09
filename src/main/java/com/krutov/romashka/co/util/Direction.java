@@ -1,10 +1,10 @@
-package com.krutov.romashka.co.dao.DB;
+package com.krutov.romashka.co.util;
 
 public enum Direction {
     ASC("ASC"),
     DESC("DESC");
 
-    private String sortDirection;
+    private final String sortDirection;
 
     Direction(String sortDirection) {
         this.sortDirection = sortDirection;

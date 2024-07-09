@@ -1,18 +1,24 @@
 package com.krutov.romashka.co.controller;
 
-import com.krutov.romashka.co.dao.DB.Direction;
-import com.krutov.romashka.co.dao.DB.ListData;
-import com.krutov.romashka.co.dao.DB.SortData;
-import com.krutov.romashka.co.dao.DB.SqlFilters;
 import com.krutov.romashka.co.dao.ProductDao;
+import com.krutov.romashka.co.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
+import com.krutov.romashka.co.util.Direction;
+import com.krutov.romashka.co.util.ListData;
+import com.krutov.romashka.co.util.SortData;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,50 +29,44 @@ import java.util.List;
 @Validated
 public class ProductController {
 
+    /**
+     * Слой сервисов не заводил, но понимаю, что он должен быть.
+     */
     private final ProductDao productDao;
 
     @PostMapping
     public Long createProduct(@RequestBody @Valid Product editProduct, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new StringIndexOutOfBoundsException();
-        }
-        else {
+        } else {
             return productDao.create(editProduct);
         }
     }
 
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable("id") long id) {
-    return productDao.getById(id);
+        return productDao.getById(id);
     }
 
     @GetMapping
     List<Product> getAllProducts(
-            @RequestParam (name = "filterName", required = false) @Size(max = 255) String filterName,
-            @RequestParam (name = "filterPrice", required = false) @Min(0) Double filterPrice,
-            @RequestParam(name = "filterPriceSIgn", required = false) String filterSign,
-            @RequestParam(name = "filterAvailable", required = false) Double filterAv,
-            @RequestParam(name = "sortByNameDirection", required = false) Direction nameDirection,
-            @RequestParam(name = "sortByPriceDirection", required = false) Direction priceDirection,
-            @RequestParam(name = "limit", required = false) Integer limit,
-            @RequestParam(name = "offset", required = false) Integer offset) {
+        @Valid ProductSearchRequest request,
+        @RequestParam(name = "sortByNameDirection", required = false) Direction nameDirection,
+        @RequestParam(name = "sortByPriceDirection", required = false) Direction priceDirection,
+        @RequestParam(name = "limit", required = false, defaultValue = "1000000") Integer limit,
+        @RequestParam(name = "offset", required = false, defaultValue = "0") Integer offset
+    ) {
 
         List<SortData> sortDataList = new ArrayList<>();
-        if (!(nameDirection == null)){
-            sortDataList.add(new SortData("name",nameDirection));
+        if (nameDirection != null) {
+            sortDataList.add(new SortData("name", nameDirection));
         }
         if (!(priceDirection == null)) {
-            sortDataList.add(new SortData("price",priceDirection));
+            sortDataList.add(new SortData("price", priceDirection));
         }
-        ListData listData = new ListData(limit,offset,sortDataList);
+        ListData listData = new ListData(limit, offset, sortDataList);
 
-       SqlFilters sqlFilters = SqlFilters.builder()
-                .like("name", filterName)
-                .eq("available", filterAv)
-                .priceFilter("price",filterPrice, filterSign).build();
-
-
-            return productDao.getAllProducts(listData, sqlFilters);
+        return productDao.searchProduct(request, listData);
     }
 
     @PatchMapping
@@ -74,7 +74,7 @@ public class ProductController {
                               @RequestBody @Valid Product editProduct,
                               BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             throw new StringIndexOutOfBoundsException();
         } else {
             productDao.update(id, editProduct);

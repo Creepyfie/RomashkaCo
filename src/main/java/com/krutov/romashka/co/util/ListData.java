@@ -1,4 +1,4 @@
-package com.krutov.romashka.co.dao.DB;
+package com.krutov.romashka.co.util;
 
 import lombok.Value;
 

@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RomashkaCoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(RomashkaCoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RomashkaCoApplication.class, args);
+    }
 
 }
