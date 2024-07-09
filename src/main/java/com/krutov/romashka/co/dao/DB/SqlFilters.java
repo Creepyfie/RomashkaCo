@@ -55,7 +55,7 @@ public class SqlFilters {
             return this;
         }
         public Builder priceFilter(String columnName, Number value, String filterSign) {
-            if (null != value) {
+            if (null != value && isNotBlank(filterSign)) {
                 if (filterSign.equals("eq")) {
                     eq(columnName, value);
                 } else if(filterSign.equals("lt")) {
@@ -63,7 +63,6 @@ public class SqlFilters {
                 } else {
                     gt(columnName, value);
                 }
-
             }
             return this;
         }

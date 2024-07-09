@@ -43,7 +43,7 @@ public class PagingSortingUtil {
         }
         return " ORDER BY " + sortData
                 .stream()
-                .map(data -> uiDbFieldMapping.getOrDefault(data.getField(), data.getField()) + " " + data.getSortDirection())
+                .map(data -> uiDbFieldMapping.getOrDefault(data.getField(), data.getField()) + " " + data.getDirection().getSortDirection())
                 .collect(Collectors.joining(", "));
     }
 }

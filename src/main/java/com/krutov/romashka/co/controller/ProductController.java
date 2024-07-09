@@ -1,5 +1,6 @@
 package com.krutov.romashka.co.controller;
 
+import com.krutov.romashka.co.dao.DB.Direction;
 import com.krutov.romashka.co.dao.DB.ListData;
 import com.krutov.romashka.co.dao.DB.SortData;
 import com.krutov.romashka.co.dao.DB.SqlFilters;
@@ -45,16 +46,16 @@ public class ProductController {
             @RequestParam (name = "filterPrice", required = false) @Min(0) Double filterPrice,
             @RequestParam(name = "filterPriceSIgn", required = false) String filterSign,
             @RequestParam(name = "filterAvailable", required = false) Double filterAv,
-            @RequestParam(name = "sortByNameDirection", required = false) String nameDirection,
-            @RequestParam(name = "sortByPriceDirection", required = false) String priceDirection,
+            @RequestParam(name = "sortByNameDirection", required = false) Direction nameDirection,
+            @RequestParam(name = "sortByPriceDirection", required = false) Direction priceDirection,
             @RequestParam(name = "limit", required = false) Integer limit,
             @RequestParam(name = "offset", required = false) Integer offset) {
 
         List<SortData> sortDataList = new ArrayList<>();
-        if (!nameDirection.isEmpty()){
+        if (!(nameDirection == null)){
             sortDataList.add(new SortData("name",nameDirection));
         }
-        if (!priceDirection.isEmpty()) {
+        if (!(priceDirection == null)) {
             sortDataList.add(new SortData("price",priceDirection));
         }
         ListData listData = new ListData(limit,offset,sortDataList);
