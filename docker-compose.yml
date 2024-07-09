@@ -20,6 +20,7 @@ services:
     container_name: 'romaska-app'
     environment:
       POSTGRES_HOST: postgresdb
+      POSTGRES_NAME: romashka_co
     ports:
       - 8080:8080
 

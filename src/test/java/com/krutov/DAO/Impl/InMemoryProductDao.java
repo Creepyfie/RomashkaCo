@@ -44,7 +44,7 @@ public class InMemoryProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> getAllProducts(ListData listData, String sqlFilters) {
+    public List<Product> getAllProducts(ListData listData, SqlFilters sqlFilters) {
         return products.values().stream().toList();
     }
 }

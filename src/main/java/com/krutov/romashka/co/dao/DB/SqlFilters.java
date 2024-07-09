@@ -37,11 +37,11 @@ public class SqlFilters {
         private Builder() {
         }
 
-        public Builder eq(String columnName, Number value) {
-            if (null != value) {
-                var paramName = columnName + "Eq";
-                predicateBuilder.add(columnName + " = " + param(paramName));
-                params.addValue(paramName, value);
+        public Builder like(String columnName, String value) {
+            if (isNotBlank(value)) {
+                var paramName = columnName + "Like";
+                predicateBuilder.add(columnName + " LIKE " + param(paramName));
+                params.addValue(paramName, "%" + value + "%");
             }
             return this;
         }
@@ -66,11 +66,11 @@ public class SqlFilters {
             }
             return this;
         }
-        public Builder like(String columnName, String value) {
-            if (isNotBlank(value)) {
-                var paramName = columnName + "Like";
-                predicateBuilder.add(columnName + " LIKE " + param(paramName));
-                params.addValue(paramName, "%" + value + "%");
+        public Builder eq(String columnName, Number value) {
+            if (null != value) {
+                var paramName = columnName + "Eq";
+                predicateBuilder.add(columnName + " = " + param(paramName));
+                params.addValue(paramName, value);
             }
             return this;
         }

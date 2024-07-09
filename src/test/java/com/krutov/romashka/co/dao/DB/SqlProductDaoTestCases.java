@@ -17,28 +17,32 @@ public abstract class SqlProductDaoTestCases {
     @Test
     void create_product() {
         //Arrange
-        Product productExpected = new Product(1L,"Jacoco","first product", 1.0d, false);
+        Product product = new Product(1L,"Jacoco","first product", 1.0d, false);
 
         //Act
         long id = productDao.create(new Product(1L,"Jacoco","first product", 1.0d, false));
         Product actual = productDao.getById(id);
+        Product expected = new Product(id, product.getName()
+                , product.getDescription(), product.getPrice(), product.getAvailable());
 
         //Assert
-        Assertions.assertEquals(productExpected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     void update_product() {
         //Arrange
-        Product productExpected = new Product(1L,"JacocoUpdated","first product", 1.0d, false);
+        Product product = new Product(1L,"JacocoUpdated","first product", 1.0d, false);
         long id = productDao.create(new Product(1L,"Jacoco","first product", 1.0d, false));
 
         //Act
         productDao.update(id, new Product(1L,"JacocoUpdated","first product", 1.0d, false));
         Product actual = productDao.getById(id);
+        Product expected = new Product(id, product.getName(),product.getDescription()
+                                        ,product.getPrice(),product.getAvailable());
 
         //Assert
-        Assertions.assertEquals(productExpected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -68,9 +72,12 @@ public abstract class SqlProductDaoTestCases {
         productDao.create(product3);
 
         Product actual = productDao.getById(id);
+        Product expected = new Product(id, productExpected.getName()
+                ,productExpected.getDescription(), productExpected.getPrice()
+                ,productExpected.getAvailable());
 
         //Assert
-        Assertions.assertEquals(productExpected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -80,23 +87,24 @@ public abstract class SqlProductDaoTestCases {
         List<SortData> sortData = new ArrayList<>();
         sortData.add(new SortData("name", Direction.DESC));
 
-        ListData listData = new ListData(4, 1,sortData);
+        ListData listData = new ListData(4, 0,sortData);
 
         List<Product> expectedList = new ArrayList<>();
         Product product1 = new Product(1L,"Abba","first product", 1.0d, false);
         Product product2 = new Product(2L,"Cabba","second product", 2.0d, true);
         Product product3 = new Product(3L,"Babba","third product", 3.0d, true);
 
-        expectedList.add(product1);
-        expectedList.add(product2);
-        expectedList.add(product3);
 
         //Act
-        productDao.create(product1);
-        productDao.create(product2);
-        productDao.create(product3);
+        long id1 = productDao.create(product1);
+        long id2 = productDao.create(product2);
+        long id3 = productDao.create(product3);
 
-        List<Product> actualList = productDao.getAllProducts(listData,SqlFilters.builder().lt("price",3).build().makeWhereClause());
+        expectedList.add(new Product(id2,product2.getName(),product2.getDescription(),product2.getPrice(),product2.getAvailable()));
+        expectedList.add(new Product(id1,product1.getName(),product1.getDescription(),product1.getPrice(),product1.getAvailable()));
+       // expectedList.add(new Product(id3,product3.getName(),product3.getDescription(),product3.getPrice(),product3.getAvailable()));
+
+        List<Product> actualList = productDao.getAllProducts(listData,SqlFilters.builder().priceFilter("price", 3, "lt").build());
 
         //Assert
         Assertions.assertEquals(expectedList, actualList);

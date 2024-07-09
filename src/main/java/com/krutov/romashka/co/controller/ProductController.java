@@ -60,10 +60,10 @@ public class ProductController {
         }
         ListData listData = new ListData(limit,offset,sortDataList);
 
-        String sqlFilters = SqlFilters.builder()
+       SqlFilters sqlFilters = SqlFilters.builder()
                 .like("name", filterName)
                 .eq("available", filterAv)
-                .priceFilter("price",filterPrice, filterSign).build().makeWhereClause();
+                .priceFilter("price",filterPrice, filterSign).build();
 
 
             return productDao.getAllProducts(listData, sqlFilters);
