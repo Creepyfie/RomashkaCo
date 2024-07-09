@@ -5,6 +5,7 @@ import com.krutov.romashka.co.dao.DB.ListData;
 import com.krutov.romashka.co.dao.DB.SortData;
 import com.krutov.romashka.co.dao.DB.SqlFilters;
 import com.krutov.romashka.co.dao.ProductDao;
+import com.krutov.romashka.co.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -29,44 +30,35 @@ public class ProductController {
     public Long createProduct(@RequestBody @Valid Product editProduct, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new StringIndexOutOfBoundsException();
-        }
-        else {
+        } else {
             return productDao.create(editProduct);
         }
     }
 
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable("id") long id) {
-    return productDao.getById(id);
+        return productDao.getById(id);
     }
 
     @GetMapping
     List<Product> getAllProducts(
-            @RequestParam (name = "filterName", required = false) @Size(max = 255) String filterName,
-            @RequestParam (name = "filterPrice", required = false) @Min(0) Double filterPrice,
-            @RequestParam(name = "filterPriceSIgn", required = false) String filterSign,
-            @RequestParam(name = "filterAvailable", required = false) Double filterAv,
+            ProductSearchRequest request,
             @RequestParam(name = "sortByNameDirection", required = false) Direction nameDirection,
             @RequestParam(name = "sortByPriceDirection", required = false) Direction priceDirection,
-            @RequestParam(name = "limit", required = false) Integer limit,
-            @RequestParam(name = "offset", required = false) Integer offset) {
+            @RequestParam(name = "limit", required = false, defaultValue = "1000000") Integer limit,
+            @RequestParam(name = "offset", required = false, defaultValue = "0") Integer offset
+    ) {
 
         List<SortData> sortDataList = new ArrayList<>();
-        if (!(nameDirection == null)){
-            sortDataList.add(new SortData("name",nameDirection));
+        if (nameDirection != null) {
+            sortDataList.add(new SortData("name", nameDirection));
         }
         if (!(priceDirection == null)) {
-            sortDataList.add(new SortData("price",priceDirection));
+            sortDataList.add(new SortData("price", priceDirection));
         }
-        ListData listData = new ListData(limit,offset,sortDataList);
+        ListData listData = new ListData(limit, offset, sortDataList);
 
-       SqlFilters sqlFilters = SqlFilters.builder()
-                .like("name", filterName)
-                .eq("available", filterAv)
-                .priceFilter("price",filterPrice, filterSign).build();
-
-
-            return productDao.getAllProducts(listData, sqlFilters);
+        return productDao.getAllProducts(request, listData);
     }
 
     @PatchMapping
@@ -74,7 +66,7 @@ public class ProductController {
                               @RequestBody @Valid Product editProduct,
                               BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             throw new StringIndexOutOfBoundsException();
         } else {
             productDao.update(id, editProduct);

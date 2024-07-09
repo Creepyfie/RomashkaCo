@@ -1,6 +1,7 @@
 package com.krutov.romashka.co.dao.DB;
 
 import com.krutov.romashka.co.dao.ProductDao;
+import com.krutov.romashka.co.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SqlProductDaoTestCases {
+public abstract class ProductDaoTestCases {
 
     abstract ProductDao getDao();
 
@@ -84,6 +85,7 @@ public abstract class SqlProductDaoTestCases {
     void get_products_with_filters_and_sorting() {
         //Arrange
 
+        ProductSearchRequest filters = new ProductSearchRequest("",2.5, "lt",null);
         List<SortData> sortData = new ArrayList<>();
         sortData.add(new SortData("name", Direction.DESC));
 
@@ -104,7 +106,7 @@ public abstract class SqlProductDaoTestCases {
         expectedList.add(new Product(id1,product1.getName(),product1.getDescription(),product1.getPrice(),product1.getAvailable()));
        // expectedList.add(new Product(id3,product3.getName(),product3.getDescription(),product3.getPrice(),product3.getAvailable()));
 
-        List<Product> actualList = productDao.getAllProducts(listData,SqlFilters.builder().priceFilter("price", 3, "lt").build());
+        List<Product> actualList = productDao.getAllProducts(filters, listData);
 
         //Assert
         Assertions.assertEquals(expectedList, actualList);

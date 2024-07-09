@@ -6,6 +6,5 @@ import lombok.Value;
 public class SortData {
     String field;
     Direction direction;
-
 }
 

@@ -1,6 +1,7 @@
 package com.krutov.romashka.co.dao.DB;
 
 import com.krutov.romashka.co.dao.ProductDao;
+import com.krutov.romashka.co.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,6 +15,10 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
+import static java.util.function.Predicate.not;
+import static org.apache.commons.collections4.CollectionUtils.*;
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -93,20 +98,41 @@ public class SqlProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> getAllProducts(ListData listData, SqlFilters sqlFilters) {
+    public List<Product> getAllProducts(ProductSearchRequest request, ListData listData) {
+
+        SqlFilters.Builder filtersBuilder = SqlFilters.builder()
+                .like("name", request.getName())
+                .eq("available", request.getAvailable());
+
+        if (isNotEmpty(request.getPriceSign())) {
+            switch (request.getPriceSign()) {
+                case "lt" -> filtersBuilder.lt("price", request.getPrice());
+                case "gt" -> filtersBuilder.gt("price", request.getPrice());
+                case "eq" -> filtersBuilder.eq("price", request.getPrice());
+                default -> throw new IllegalArgumentException("некорректно указан фильтр цены: %s".formatted(request.getPriceSign()));
+            }
+        }
+
+        SqlFilters filters = filtersBuilder.build();
 
         String sql = """
                 SELECT * FROM products
-                """;
-        String filters = "";
-        if (!sqlFilters.isEmpty()) {
-            filters = sqlFilters.makeWhereClause();
-        }
+                """ + filters.makeWhereClause()
+                + getOrderByClause(listData)
+                + " LIMIT " + listData.getLimit() + " OFFSET " + listData.getOffset();
 
-        String sqlWithFilters = sql + filters;
-        String sqlWithSort = PagingSortingUtil.addSortingAndPaging(sqlWithFilters, listData);
+        return jdbc.query(sql, filters.getParams() ,rowMapper);
+    }
 
-        return jdbc.query(sqlWithSort, sqlFilters.getParams() ,rowMapper);
+    public String getOrderByClause(ListData listData) {
+        return emptyIfNull(listData.getSortData())
+                .stream()
+                .map(sort -> sort.getField() + " " + sort.getDirection().name())
+                .filter(not(String::isBlank))
+                .reduce((orders, columnOrder) -> orders + ", " + columnOrder)
+                .filter(not(String::isBlank))
+                .map(orders -> " ORDER BY " + orders)
+                .orElse("");
     }
 
 

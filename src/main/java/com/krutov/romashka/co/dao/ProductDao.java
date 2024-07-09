@@ -2,6 +2,7 @@ package com.krutov.romashka.co.dao;
 
 import com.krutov.romashka.co.dao.DB.ListData;
 import com.krutov.romashka.co.dao.DB.SqlFilters;
+import com.krutov.romashka.co.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
 import liquibase.sql.Sql;
 
@@ -17,5 +18,5 @@ public interface ProductDao {
 
     Product getById(long id);
 
-    List<Product> getAllProducts(ListData listData, SqlFilters sqlFilters);
+    List<Product> getAllProducts(ProductSearchRequest request, ListData listData);
 }
