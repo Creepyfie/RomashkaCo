@@ -3,11 +3,14 @@ package com.krutov.romashka.co.dao.impl;
 import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
+import com.krutov.romashka.co.util.Direction;
 import com.krutov.romashka.co.util.ListData;
+import com.krutov.romashka.co.util.SortData;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.collections4.ListUtils.union;
@@ -103,7 +106,7 @@ public abstract class ProductDaoTestCases {
     }
 
     @Test
-    void get_products_with_filters_and_sorting() {
+    void get_products_with_filters() {
         //Arrange
         Product ownProductWithHighPrice = Instancio.create(Product.class).toBuilder().name("ownName").price(BigDecimal.valueOf(3000.0)).available(true).build();
         Product ownProductWithLowPrice = Instancio.create(Product.class).toBuilder().name("ownName").price(BigDecimal.valueOf(500.0)).available(true).build();
@@ -139,6 +142,93 @@ public abstract class ProductDaoTestCases {
         assertThat(union(actual1, actual2))
             .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
             .containsOnly(ownProductWithHighPrice, ownProductWithLowPrice);
+    }
+
+    @Test
+    void get_products_with_sorting_by_name_ASC() {
+        //Arrange
+        Product productA = Instancio.create(Product.class).toBuilder().name("AProduct").build();
+        Product productB = Instancio.create(Product.class).toBuilder().name("BProduct").build();
+        Product productC = Instancio.create(Product.class).toBuilder().name("CProduct").build();
+        Product productD = Instancio.create(Product.class).toBuilder().name("DProduct").build();
+
+        productDao.create(productB);
+        productDao.create(productA);
+        productDao.create(productD);
+        productDao.create(productC);
+
+
+        //Act
+        ListData sortProductsByNameAsc = new ListData(Integer.MAX_VALUE
+            ,0
+            ,List.of(new SortData("name", Direction.ASC)));
+
+        List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), sortProductsByNameAsc);
+
+        //Assert
+        assertThat(actual)
+            .hasSize(4)
+            .usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(List.of(productA,productB,productC,productD));
+    }
+
+    @Test
+    void get_products_with_sorting_by_price_DESC() {
+        //Arrange
+        Product productA = Instancio.create(Product.class).toBuilder().price(BigDecimal.valueOf(1000)).build();
+        Product productB = Instancio.create(Product.class).toBuilder().price(BigDecimal.valueOf(100)).build();
+        Product productC = Instancio.create(Product.class).toBuilder().price(BigDecimal.valueOf(10)).build();
+        Product productD = Instancio.create(Product.class).toBuilder().price(BigDecimal.valueOf(1)).build();
+
+        productDao.create(productD);
+        productDao.create(productB);
+        productDao.create(productA);
+        productDao.create(productC);
+
+
+        //Act
+        ListData sortProductsByPriceDesc= new ListData(Integer.MAX_VALUE
+            ,0
+            ,List.of(new SortData("price", Direction.DESC)));
+
+        List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), sortProductsByPriceDesc);
+
+        //Assert
+        assertThat(actual)
+            .hasSize(4)
+            .usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(List.of(productA,productB,productC,productD));
+    }
+
+    @Test
+    void get_products_with_paging() {
+        //Arrange
+        Product productA = Instancio.create(Product.class);
+        Product productB = Instancio.create(Product.class);
+        Product productC = Instancio.create(Product.class);
+        Product productD = Instancio.create(Product.class);
+
+        productDao.create(productA);
+        productDao.create(productB);
+        productDao.create(productC);
+        productDao.create(productD);
+
+
+        //Act
+        Integer limit = 2;
+        Integer offset = 1;
+
+        ListData sortPaging = new ListData(limit
+            ,offset
+            ,List.of());
+
+        List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), sortPaging);
+
+        //Assert
+        assertThat(actual)
+            .hasSize(2);
     }
 
     private static ListData limitMax() {
