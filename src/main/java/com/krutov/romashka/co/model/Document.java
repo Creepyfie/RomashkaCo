@@ -1,12 +1,15 @@
-package com.krutov.romashka.co.model.documents;
+package com.krutov.romashka.co.model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-
-public class Document {
+@Getter
+@AllArgsConstructor
+abstract class Document {
     Long id;
 
     @NotEmpty(message = "name should not be empty")

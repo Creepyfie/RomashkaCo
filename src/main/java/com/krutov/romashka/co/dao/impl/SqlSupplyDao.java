@@ -100,8 +100,8 @@ public class SqlSupplyDao implements SupplyDao {
 
     static class SupplyRowMapper implements RowMapper<com.krutov.romashka.co.model.Supply> {
         @Override
-        public com.krutov.romashka.co.model.Supply mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new com.krutov.romashka.co.model.Supply(
+        public Supply mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Supply(
                 rs.getLong("id"),
                 rs.getString("name"),
                 rs.getLong("product_id"),
