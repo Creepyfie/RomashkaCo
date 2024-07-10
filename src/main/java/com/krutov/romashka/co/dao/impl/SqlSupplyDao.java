@@ -1,8 +1,7 @@
 package com.krutov.romashka.co.dao.impl;
 
-import com.krutov.romashka.co.dao.DocumentDao;
+import com.krutov.romashka.co.dao.SupplyDao;
 import com.krutov.romashka.co.model.Supply;
-import com.krutov.romashka.co.model.documents.Document;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,14 +17,13 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class SqlSupplyDao implements DocumentDao {
+public class SqlSupplyDao implements SupplyDao {
 
     private final NamedParameterJdbcOperations jdbc;
-    private final RowMapper<Supply> rowMapper = new SupplyRowMapper();
+    private final RowMapper<com.krutov.romashka.co.model.Supply> rowMapper = new SupplyRowMapper();
 
     @Override
-    public long create(Document document) {
-        Supply supply = (Supply) document;
+    public long create(Supply supply) {
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("name", supply.getName())
             .addValue("product_id", supply.getProductId())
@@ -44,9 +42,9 @@ public class SqlSupplyDao implements DocumentDao {
     }
 
     @Override
-    public void update(long id, Document updateDocument) {
+    public void update(long id, Supply updateSupply) {
 
-        Supply supply = (Supply) updateDocument;
+        com.krutov.romashka.co.model.Supply supply = (com.krutov.romashka.co.model.Supply) updateSupply;
 
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("id", id)
@@ -87,7 +85,7 @@ public class SqlSupplyDao implements DocumentDao {
             WHERE id = :id
             """;
 
-        List<Supply> result = jdbc.query(sql, param, rowMapper);
+        List<com.krutov.romashka.co.model.Supply> result = jdbc.query(sql, param, rowMapper);
 
         return !result.isEmpty() ? result.get(0) : null;
     }
@@ -100,10 +98,10 @@ public class SqlSupplyDao implements DocumentDao {
         return jdbc.query(sql, rowMapper);
     }
 
-    static class SupplyRowMapper implements RowMapper<Supply> {
+    static class SupplyRowMapper implements RowMapper<com.krutov.romashka.co.model.Supply> {
         @Override
-        public Supply mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Supply(
+        public com.krutov.romashka.co.model.Supply mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new com.krutov.romashka.co.model.Supply(
                 rs.getLong("id"),
                 rs.getString("name"),
                 rs.getLong("product_id"),

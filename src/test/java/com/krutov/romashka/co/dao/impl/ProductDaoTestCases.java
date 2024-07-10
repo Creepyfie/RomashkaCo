@@ -10,7 +10,6 @@ import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.collections4.ListUtils.union;
@@ -160,8 +159,8 @@ public abstract class ProductDaoTestCases {
 
         //Act
         ListData sortProductsByNameAsc = new ListData(Integer.MAX_VALUE
-            ,0
-            ,List.of(new SortData("name", Direction.ASC)));
+            , 0
+            , List.of(new SortData("name", Direction.ASC)));
 
         List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), sortProductsByNameAsc);
 
@@ -170,7 +169,7 @@ public abstract class ProductDaoTestCases {
             .hasSize(4)
             .usingRecursiveComparison()
             .ignoringFields("id")
-            .isEqualTo(List.of(productA,productB,productC,productD));
+            .isEqualTo(List.of(productA, productB, productC, productD));
     }
 
     @Test
@@ -186,11 +185,10 @@ public abstract class ProductDaoTestCases {
         productDao.create(productA);
         productDao.create(productC);
 
-
         //Act
-        ListData sortProductsByPriceDesc= new ListData(Integer.MAX_VALUE
-            ,0
-            ,List.of(new SortData("price", Direction.DESC)));
+        ListData sortProductsByPriceDesc = new ListData(Integer.MAX_VALUE
+            , 0
+            , List.of(new SortData("price", Direction.DESC)));
 
         List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), sortProductsByPriceDesc);
 
@@ -199,7 +197,7 @@ public abstract class ProductDaoTestCases {
             .hasSize(4)
             .usingRecursiveComparison()
             .ignoringFields("id")
-            .isEqualTo(List.of(productA,productB,productC,productD));
+            .isEqualTo(List.of(productA, productB, productC, productD));
     }
 
     @Test
@@ -217,12 +215,12 @@ public abstract class ProductDaoTestCases {
 
 
         //Act
-        Integer limit = 2;
-        Integer offset = 1;
+        int limit = 2;
+        int offset = 1;
 
         ListData sortPaging = new ListData(limit
-            ,offset
-            ,List.of());
+            , offset
+            , List.of());
 
         List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), sortPaging);
 

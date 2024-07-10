@@ -1,11 +1,8 @@
 package com.krutov.romashka.co.dao.impl;
 
-import com.krutov.romashka.co.dao.DocumentDao;
+import com.krutov.romashka.co.dao.SellingDao;
 import com.krutov.romashka.co.model.Selling;
-import com.krutov.romashka.co.model.Supply;
-import com.krutov.romashka.co.model.documents.Document;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -20,15 +17,14 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class SqlSellingDao implements DocumentDao {
+public class SqlSellingDao implements SellingDao {
 
     private final RowMapper<Selling> rowMapper = new SellingRowMapper();
     private final NamedParameterJdbcOperations jdbc;
 
     @Override
-    public long create(Document document) {
+    public long create(Selling selling) {
 
-        Selling selling = (Selling) document;
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("name", selling.getName())
             .addValue("product_id", selling.getProductId())
@@ -48,16 +44,14 @@ public class SqlSellingDao implements DocumentDao {
     }
 
     @Override
-    public void update(long id, Document updateDocument) {
-
-        Selling selling = (Selling) updateDocument;
+    public void update(long id, Selling updateSelling) {
 
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("id", id)
-            .addValue("name", selling.getName())
-            .addValue("product_id", selling.getProductId())
-            .addValue("amount", selling.getAmount())
-            .addValue("price", selling.getPrice());
+            .addValue("name", updateSelling.getName())
+            .addValue("product_id", updateSelling.getProductId())
+            .addValue("amount", updateSelling.getAmount())
+            .addValue("price", updateSelling.getPrice());
 
         String sql = """
             UPDATE sellings
@@ -100,11 +94,12 @@ public class SqlSellingDao implements DocumentDao {
 
     @Override
     public List<Selling> getAll() {
-            String sql = """
+        String sql = """
             SELECT * FROM sellings
             """;
-            return jdbc.query(sql, rowMapper);
-        }
+        return jdbc.query(sql, rowMapper);
+    }
+
     static class SellingRowMapper implements RowMapper<Selling> {
         @Override
         public Selling mapRow(ResultSet rs, int rowNum) throws SQLException {
