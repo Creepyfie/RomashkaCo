@@ -1,0 +1,114 @@
+package com.krutov.romashka.co.dao.impl;
+
+import com.krutov.romashka.co.dao.DocumentDao;
+import com.krutov.romashka.co.model.Supply;
+import com.krutov.romashka.co.model.documents.Document;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+@Repository
+@RequiredArgsConstructor
+public class SqlSupplyDao implements DocumentDao {
+
+    private final NamedParameterJdbcOperations jdbc;
+    private final RowMapper<Supply> rowMapper = new SupplyRowMapper();
+
+    @Override
+    public long create(Document document) {
+        Supply supply = (Supply) document;
+        SqlParameterSource params = new MapSqlParameterSource()
+            .addValue("name", supply.getName())
+            .addValue("product_id", supply.getProductId())
+            .addValue("amount", supply.getAmount());
+
+        String sql = """
+            INSERT INTO supplies (name, product_id, amount)
+            VALUES (:name,:product_id,:amount)
+            RETURNING id
+            """;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbc.update(sql, params, keyHolder);
+
+        return keyHolder.getKeyAs(Long.class);
+    }
+
+    @Override
+    public void update(long id, Document updateDocument) {
+
+        Supply supply = (Supply) updateDocument;
+
+        SqlParameterSource params = new MapSqlParameterSource()
+            .addValue("id", id)
+            .addValue("name", supply.getName())
+            .addValue("product_id", supply.getProductId())
+            .addValue("amount", supply.getAmount());
+
+        String sql = """
+            UPDATE supplies
+            SET name = :name, product_id = :product_id, amount = :amount
+            WHERE id = id
+            """;
+
+        jdbc.update(sql, params);
+    }
+
+    @Override
+    public void delete(long id) {
+
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", id);
+
+        String sql = """
+            DELETE FROM supplies
+            WHERE id = :id
+            """;
+        jdbc.update(sql, param);
+    }
+
+    @Override
+    public Supply getById(long id) {
+
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", id);
+
+        String sql = """
+            SELECT * FROM supplies
+            WHERE id = :id
+            """;
+
+        List<Supply> result = jdbc.query(sql, param, rowMapper);
+
+        return !result.isEmpty() ? result.get(0) : null;
+    }
+
+    @Override
+    public List<Supply> getAll() {
+        String sql = """
+            SELECT * FROM supplies
+            """;
+        return jdbc.query(sql, rowMapper);
+    }
+
+    static class SupplyRowMapper implements RowMapper<Supply> {
+        @Override
+        public Supply mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Supply(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getLong("product_id"),
+                rs.getLong("amount")
+            );
+        }
+    }
+}

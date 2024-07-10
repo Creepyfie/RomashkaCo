@@ -2,28 +2,28 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
-    <changeSet author="creepyfie" id="202400607_products">
+    <changeSet author="creepyfie" id="20241007_sellings">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="products"/>
+                <tableExists tableName="sellings"/>
             </not>
         </preConditions>
 
-        <createTable tableName="products">
+        <createTable tableName="sellings">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="text(255)"  remarks="Название товара">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="text(4096)" remarks="Описание товара">
-                <constraints nullable="true"/>
+            <column name="product_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="product_id" references="products(id)"/>
             </column>
-            <column name="price" type="numeric" defaultValueNumeric="0" remarks="Стоимость товара">
+            <column name="amount" type="bigint" defaultValue="0" remarks="Кол-во проданного товара">
+                <constraints nullable="false" checkConstraint="amount &gt;= 0"/>
+            </column>
+            <column name="price" type="numeric" defaultValueNumeric="0" remarks="Сумма продажи">
                 <constraints nullable="false" checkConstraint="price &gt;= 0"/>
-            </column>
-            <column name="available" type="boolean" defaultValueBoolean="true" remarks="Наличие товара">
-                <constraints nullable="false"/>
             </column>
         </createTable>
 
