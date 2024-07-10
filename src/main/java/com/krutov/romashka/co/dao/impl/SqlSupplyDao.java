@@ -1,6 +1,8 @@
 package com.krutov.romashka.co.dao.impl;
 
 import com.krutov.romashka.co.dao.DocumentDao;
+import com.krutov.romashka.co.model.Product;
+import com.krutov.romashka.co.model.Selling;
 import com.krutov.romashka.co.model.Supply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
@@ -96,6 +98,28 @@ public class SqlSupplyDao implements DocumentDao <Supply> {
             SELECT * FROM supplies
             """;
         return jdbc.query(sql, rowMapper);
+    }
+
+
+    public void getProductAmount(long id) {
+
+        long arrivedAmount = getAll().stream()
+            .filter(sup -> sup.getProductId() == id)
+            .reduce( 0L,(acc,supply) -> acc + supply.getAmount(),Long::sum);
+
+        long soldAmount = documentDao<Selling>.getAll()
+            .stream()
+            .filter(sel -> sel.getProductId() == id)
+            .reduce(0L, (acc, sel) -> acc + sel, Long::sum);
+
+        Product product = productDao.getById(id);
+        if (arrivedAmount > soldAmount && !product.getAvailable()) {
+            product.toBuilder().available(true).build();
+            productDao.update(id, product);
+        } else if (arrivedAmount < soldAmount && product.getAvailable()){
+            product.toBuilder().available(false).build();
+            productDao.update(id, product);
+        }
     }
 
     static class SupplyRowMapper implements RowMapper<com.krutov.romashka.co.model.Supply> {
