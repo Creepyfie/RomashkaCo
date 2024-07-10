@@ -1,17 +1,20 @@
 package com.krutov.romashka.co.model;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
-@Getter
-public class Supply extends Document {
+@With
+@Data
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class Supply {
 
-    @Builder(toBuilder = true)
-    public Supply(Long id, @NotEmpty(message = "name should not be empty") @Size(max = 255) String name, @NotNull Long productId, @Min(0) Long amount) {
-        super(id, name, productId, amount);
-    }
+    Long id;
+    String name;
+    Long productId;
+    Long amount;
 }

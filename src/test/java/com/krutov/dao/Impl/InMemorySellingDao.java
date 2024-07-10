@@ -33,13 +33,20 @@ public class InMemorySellingDao implements DocumentDao<Selling> {
     }
 
     @Override
-    public Selling getById(long id) {
+    public Selling findById(long id) {
         return sellings.get(id);
     }
 
     @Override
-    public List<Selling> getAll() {
-        return sellings.values().stream().toList();
+    public List<Selling> findByProductId(long productId) {
+        return sellings.values()
+            .stream()
+            .filter(it -> productId == it.getProductId())
+            .toList();
+    }
+
+    public List<Selling> findAll() {
+        return List.copyOf(sellings.values());
     }
 
     public void clear() {

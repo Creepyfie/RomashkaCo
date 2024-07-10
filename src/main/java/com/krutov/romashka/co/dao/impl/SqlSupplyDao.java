@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -55,7 +56,7 @@ public class SqlSupplyDao implements DocumentDao <Supply> {
         String sql = """
             UPDATE supplies
             SET name = :name, product_id = :product_id, amount = :amount
-            WHERE id = id
+            WHERE id = :id
             """;
 
         jdbc.update(sql, params);
@@ -75,7 +76,7 @@ public class SqlSupplyDao implements DocumentDao <Supply> {
     }
 
     @Override
-    public Supply getById(long id) {
+    public Supply findById(long id) {
 
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", id);
@@ -91,14 +92,17 @@ public class SqlSupplyDao implements DocumentDao <Supply> {
     }
 
     @Override
-    public List<Supply> getAll() {
+    public List<Supply> findByProductId(long productId) {
+
+        Map<String, Long> params = Map.of("productId", productId);
+
         String sql = """
-            SELECT * FROM supplies
-            """;
-        return jdbc.query(sql, rowMapper);
+            SELECT * FROM supplies WHERE product_id = :productId""";
+
+        return jdbc.query(sql, params, rowMapper);
     }
 
-    static class SupplyRowMapper implements RowMapper<com.krutov.romashka.co.model.Supply> {
+    public static class SupplyRowMapper implements RowMapper<com.krutov.romashka.co.model.Supply> {
         @Override
         public Supply mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Supply(

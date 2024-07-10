@@ -1,6 +1,7 @@
 package com.krutov.dao.Impl;
 
 import com.krutov.romashka.co.dao.DocumentDao;
+import com.krutov.romashka.co.model.Selling;
 import com.krutov.romashka.co.model.Supply;
 import org.instancio.Instancio;
 
@@ -19,7 +20,7 @@ public class InMemorySupplyDao implements DocumentDao<Supply> {
         return id;
     }
 
-
+    @Override
     public void update(long id, Supply updateSupply) {
         if (!supplies.containsKey(id)) {
             return;
@@ -27,19 +28,26 @@ public class InMemorySupplyDao implements DocumentDao<Supply> {
         supplies.put(id, (com.krutov.romashka.co.model.Supply) updateSupply);
     }
 
-
+    @Override
     public void delete(long id) {
         supplies.remove(id);
     }
 
-
-    public Supply getById(long id) {
+    @Override
+    public Supply findById(long id) {
         return supplies.get(id);
     }
 
+    @Override
+    public List<Supply> findByProductId(long productId) {
+        return supplies.values()
+            .stream()
+            .filter(it -> productId == it.getProductId())
+            .toList();
+    }
 
-    public List<Supply> getAll() {
-        return supplies.values().stream().toList();
+    public List<Supply> findAll() {
+        return List.copyOf(supplies.values());
     }
 
     public void clear() {

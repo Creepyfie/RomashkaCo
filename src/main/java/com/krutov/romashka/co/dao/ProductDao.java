@@ -1,6 +1,6 @@
 package com.krutov.romashka.co.dao;
 
-import com.krutov.romashka.co.dto.ProductSearchRequest;
+import com.krutov.romashka.co.controller.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.util.ListData;
 
@@ -14,7 +14,7 @@ public interface ProductDao {
 
     void delete(long id);
 
-    Product getById(long id);
+    Product findById(long id);
 
-    List<Product> searchProduct(ProductSearchRequest request, ListData listData);
+    List<Product> search(ProductSearchRequest request, ListData listData);
 }

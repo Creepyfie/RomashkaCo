@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class SqlSellingDao implements DocumentDao <Selling> {
             .addValue("name", selling.getName())
             .addValue("product_id", selling.getProductId())
             .addValue("amount", selling.getAmount())
-            .addValue("price", selling.getPrice());
+            .addValue("price", selling.getTotalPrice());
 
         String sql = """
             INSERT INTO sellings (name, product_id, amount, price)
@@ -51,7 +52,7 @@ public class SqlSellingDao implements DocumentDao <Selling> {
             .addValue("name", updateSelling.getName())
             .addValue("product_id", updateSelling.getProductId())
             .addValue("amount", updateSelling.getAmount())
-            .addValue("price", updateSelling.getPrice());
+            .addValue("price", updateSelling.getTotalPrice());
 
         String sql = """
             UPDATE sellings
@@ -77,7 +78,7 @@ public class SqlSellingDao implements DocumentDao <Selling> {
     }
 
     @Override
-    public Selling getById(long id) {
+    public Selling findById(long id) {
 
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", id);
@@ -93,14 +94,17 @@ public class SqlSellingDao implements DocumentDao <Selling> {
     }
 
     @Override
-    public List<Selling> getAll() {
+    public List<Selling> findByProductId(long productId) {
+
+        Map<String, Long> params = Map.of("productId", productId);
+
         String sql = """
-            SELECT * FROM sellings
-            """;
-        return jdbc.query(sql, rowMapper);
+            SELECT * FROM sellings WHERE product_id = :productId""";
+
+        return jdbc.query(sql, params, rowMapper);
     }
 
-    static class SellingRowMapper implements RowMapper<Selling> {
+    public static class SellingRowMapper implements RowMapper<Selling> {
         @Override
         public Selling mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Selling(

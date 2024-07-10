@@ -10,6 +10,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.util.List;
+import java.util.Map;
+
+import static com.krutov.romashka.co.dao.impl.SqlSellingDao.*;
 
 /**
  * Тесты прогоняются на две реализации: InMemDao и SqlDao
@@ -23,8 +29,8 @@ public class SellingDaoTest extends IntegrationTests {
     private ProductDao productDao;
 
     private final InMemorySellingDao inMemorySellingDao = new InMemorySellingDao();
-
     private final InMemoryProductDao inMemoryProductDao = new InMemoryProductDao();
+    private final RowMapper<Selling> rowMapper = new SellingRowMapper();
 
     @Nested
     class SqlDaoTest extends SellingDaoTestCases {
@@ -42,6 +48,14 @@ public class SellingDaoTest extends IntegrationTests {
         @Override
         ProductDao getProductDao() {
             return productDao;
+        }
+
+        @Override
+        List<Selling> findAll() {
+            String sql = """
+                SELECT * FROM sellings""";
+
+            return jdbcOperations.query(sql, Map.of(), rowMapper);
         }
     }
 
@@ -61,6 +75,11 @@ public class SellingDaoTest extends IntegrationTests {
         @Override
         ProductDao getProductDao() {
             return inMemoryProductDao;
+        }
+
+        @Override
+        List<Selling> findAll() {
+            return inMemorySellingDao.findAll();
         }
     }
 }

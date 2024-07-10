@@ -1,8 +1,8 @@
 package com.krutov.romashka.co.dao.impl;
 
+import com.krutov.romashka.co.controller.dto.ProductSearchRequest;
 import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.dao.util.SqlFilters;
-import com.krutov.romashka.co.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.util.ListData;
 import lombok.RequiredArgsConstructor;
@@ -84,7 +84,7 @@ public class SqlProductDao implements ProductDao {
 
 
     @Override
-    public Product getById(long id) {
+    public Product findById(long id) {
 
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", id);
@@ -100,7 +100,7 @@ public class SqlProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> searchProduct(ProductSearchRequest request, ListData listData) {
+    public List<Product> search(ProductSearchRequest request, ListData listData) {
 
         SqlFilters.Builder filtersBuilder = SqlFilters.builder()
             .like("name", request.getName())

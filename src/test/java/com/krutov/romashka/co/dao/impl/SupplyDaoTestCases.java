@@ -14,12 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class SupplyDaoTestCases {
 
     abstract DocumentDao<Supply> getDao();
-
-    private DocumentDao<Supply> supplyDao = getDao();
-
     abstract ProductDao getProductDao();
+    abstract List<Supply> findAll();
 
-    private ProductDao productDao = getProductDao();
+    private final DocumentDao<Supply> supplyDao = getDao();
+    private final ProductDao productDao = getProductDao();
 
     @Test
     void create_supply() {
@@ -29,7 +28,7 @@ public abstract class SupplyDaoTestCases {
 
         //Act
         supplyDao.create(expected);
-        List<Supply> actual = supplyDao.getAll();
+        List<Supply> actual = findAll();
 
         //Assert
         assertThat(actual)
@@ -54,7 +53,7 @@ public abstract class SupplyDaoTestCases {
             .build();
 
         supplyDao.update(id, updatedProduct);
-        List<Supply> actual = supplyDao.getAll();
+        List<Supply> actual = findAll();
 
         //Assert
         assertThat(actual)
@@ -78,7 +77,7 @@ public abstract class SupplyDaoTestCases {
 
         //Act
         supplyDao.delete(idToDelete);
-        List<Supply> actual = supplyDao.getAll();
+        List<Supply> actual = findAll();
 
         //Assert
         assertThat(actual)
@@ -100,41 +99,12 @@ public abstract class SupplyDaoTestCases {
         supplyDao.create(otherSupply);
 
         //Act
-        Supply actual = supplyDao.getById(ownId);
+        Supply actual = supplyDao.findById(ownId);
 
         //Assert
         assertThat(actual)
             .usingRecursiveComparison()
             .ignoringFields("id")
             .isEqualTo(ownSupply);
-    }
-
-    @Test
-    void get_all_supplies() {
-        //Arrange
-        long productId = productDao.create(Instancio.create(Product.class));
-
-        Supply supply1 = Instancio.create(Supply.class).toBuilder().name("ownName1").productId(productId).build();
-        Supply supply2 = Instancio.create(Supply.class).toBuilder().name("ownName2").productId(productId).build();
-        Supply supply3 = Instancio.create(Supply.class).toBuilder().name("ownName3").productId(productId).build();
-        Supply supply4 = Instancio.create(Supply.class).toBuilder().name("ownName4").productId(productId).build();
-        Supply supply5 = Instancio.create(Supply.class).toBuilder().name("ownName5").productId(productId).build();
-
-        supplyDao.create(supply1);
-        supplyDao.create(supply2);
-        supplyDao.create(supply3);
-        supplyDao.create(supply4);
-        supplyDao.create(supply5);
-
-        //Act
-
-        List<Supply> actual = supplyDao.getAll();
-
-        //Assert
-        assertThat(actual)
-            .hasSize(5)
-            .usingRecursiveComparison()
-            .ignoringFields("id")
-            .isEqualTo(List.of(supply1, supply2, supply3, supply4, supply5));
     }
 }

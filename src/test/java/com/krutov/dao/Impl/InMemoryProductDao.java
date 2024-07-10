@@ -1,7 +1,7 @@
 package com.krutov.dao.Impl;
 
 import com.krutov.romashka.co.dao.ProductDao;
-import com.krutov.romashka.co.dto.ProductSearchRequest;
+import com.krutov.romashka.co.controller.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.util.Direction;
 import com.krutov.romashka.co.util.ListData;
@@ -39,12 +39,12 @@ public class InMemoryProductDao implements ProductDao {
     }
 
     @Override
-    public Product getById(long id) {
+    public Product findById(long id) {
         return products.get(id);
     }
 
     @Override
-    public List<Product> searchProduct(ProductSearchRequest request, ListData listData) {
+    public List<Product> search(ProductSearchRequest request, ListData listData) {
         return products.values().stream()
             .filter(row -> (request.getAvailable() == null || (row.getAvailable() == request.getAvailable())))
             .filter(row -> (request.getName() == null || row.getName().equals(request.getName())))
@@ -59,6 +59,10 @@ public class InMemoryProductDao implements ProductDao {
             .skip(listData.getOffset())
             .limit(listData.getLimit())
             .toList();
+    }
+
+    public List<Product> findAll() {
+        return List.copyOf(products.values());
     }
 
     public void clear() {
