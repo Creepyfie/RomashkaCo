@@ -1,6 +1,6 @@
 package com.krutov.dao.Impl;
 
-import com.krutov.romashka.co.dao.SupplyDao;
+import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.model.Supply;
 import org.instancio.Instancio;
 
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemorySupplyDao implements SupplyDao {
+public class InMemorySupplyDao implements DocumentDao<Supply> {
 
     Map<Long, Supply> supplies = new HashMap<>();
 

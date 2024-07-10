@@ -1,7 +1,7 @@
 package com.krutov.romashka.co.dao.impl;
 
+import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.dao.ProductDao;
-import com.krutov.romashka.co.dao.SellingDao;
 import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.model.Selling;
 import org.instancio.Instancio;
@@ -13,9 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class SellingDaoTestCases {
 
-    abstract SellingDao getDao();
+    abstract DocumentDao<Selling> getDao();
 
-    private SellingDao sellingDao = getDao();
+    private DocumentDao<Selling> sellingDao = getDao();
 
     abstract ProductDao getProductDao();
 

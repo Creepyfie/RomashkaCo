@@ -1,6 +1,6 @@
 package com.krutov.romashka.co.dao.impl;
 
-import com.krutov.romashka.co.dao.SellingDao;
+import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.model.Selling;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class SqlSellingDao implements SellingDao {
+public class SqlSellingDao implements DocumentDao <Selling> {
 
     private final RowMapper<Selling> rowMapper = new SellingRowMapper();
     private final NamedParameterJdbcOperations jdbc;

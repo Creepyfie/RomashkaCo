@@ -1,6 +1,6 @@
 package com.krutov.dao.Impl;
 
-import com.krutov.romashka.co.dao.SellingDao;
+import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.model.Selling;
 import org.instancio.Instancio;
 
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemorySellingDao implements SellingDao {
+public class InMemorySellingDao implements DocumentDao<Selling> {
 
     Map<Long, Selling> sellings = new HashMap<>();
 

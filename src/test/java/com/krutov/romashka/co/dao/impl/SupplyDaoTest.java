@@ -3,8 +3,9 @@ package com.krutov.romashka.co.dao.impl;
 import com.krutov.dao.Impl.InMemoryProductDao;
 import com.krutov.dao.Impl.InMemorySupplyDao;
 import com.krutov.romashka.co.IntegrationTests;
+import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.dao.ProductDao;
-import com.krutov.romashka.co.dao.SupplyDao;
+import com.krutov.romashka.co.model.Supply;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SupplyDaoTest extends IntegrationTests {
 
     @Autowired
-    private SupplyDao supplyDao;
+    private DocumentDao<Supply> supplyDao;
 
     @Autowired
     private ProductDao productDao;
@@ -33,7 +34,7 @@ public class SupplyDaoTest extends IntegrationTests {
         }
 
         @Override
-        SupplyDao getDao() {
+        DocumentDao<Supply> getDao() {
             return supplyDao;
         }
 
@@ -52,7 +53,7 @@ public class SupplyDaoTest extends IntegrationTests {
         }
 
         @Override
-        SupplyDao getDao() {
+        DocumentDao<Supply> getDao() {
             return inMemorySuppleDao;
         }
 

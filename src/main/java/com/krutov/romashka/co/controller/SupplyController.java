@@ -1,6 +1,6 @@
 package com.krutov.romashka.co.controller;
 
-import com.krutov.romashka.co.dao.SupplyDao;
+import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.model.Supply;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.List;
 public class SupplyController {
 
 
-    private final SupplyDao supplyDao;
+    private final DocumentDao<Supply> supplyDao;
 
     @PostMapping
     public Long createSupply(@RequestBody @Valid Supply editSupply, BindingResult bindingResult) {

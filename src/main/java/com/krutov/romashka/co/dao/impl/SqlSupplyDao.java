@@ -1,6 +1,6 @@
 package com.krutov.romashka.co.dao.impl;
 
-import com.krutov.romashka.co.dao.SupplyDao;
+import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.model.Supply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class SqlSupplyDao implements SupplyDao {
+public class SqlSupplyDao implements DocumentDao <Supply> {
 
     private final NamedParameterJdbcOperations jdbc;
     private final RowMapper<com.krutov.romashka.co.model.Supply> rowMapper = new SupplyRowMapper();

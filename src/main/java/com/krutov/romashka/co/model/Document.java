@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-abstract class Document {
+public class Document {
     Long id;
 
     @NotEmpty(message = "name should not be empty")
