@@ -1,7 +1,7 @@
 package com.krutov.romashka.co.dao.impl;
 
 import com.krutov.romashka.co.dao.ProductDao;
-import com.krutov.romashka.co.dto.ProductSearchRequest;
+import com.krutov.romashka.co.controller.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.util.Direction;
 import com.krutov.romashka.co.util.ListData;
@@ -28,7 +28,7 @@ public abstract class ProductDaoTestCases {
 
         //Act
         productDao.create(expected);
-        List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), limitMax());
+        List<Product> actual = productDao.search(new ProductSearchRequest(), limitMax());
 
         //Assert
         assertThat(actual)
@@ -54,7 +54,7 @@ public abstract class ProductDaoTestCases {
             .build();
 
         productDao.update(id, updatedProduct);
-        List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), limitMax());
+        List<Product> actual = productDao.search(new ProductSearchRequest(), limitMax());
 
         //Assert
         assertThat(actual)
@@ -75,7 +75,7 @@ public abstract class ProductDaoTestCases {
 
         //Act
         productDao.delete(idToDelete);
-        List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), limitMax());
+        List<Product> actual = productDao.search(new ProductSearchRequest(), limitMax());
 
         //Assert
         assertThat(actual)
@@ -95,7 +95,7 @@ public abstract class ProductDaoTestCases {
         productDao.create(otherProduct);
 
         //Act
-        Product actual = productDao.getById(ownId);
+        Product actual = productDao.findById(ownId);
 
         //Assert
         assertThat(actual)
@@ -134,8 +134,8 @@ public abstract class ProductDaoTestCases {
             .available(true)
             .build();
 
-        List<Product> actual1 = productDao.searchProduct(requestWithPriceGreaterThan, limitMax());
-        List<Product> actual2 = productDao.searchProduct(requestWithPriceLessThan, limitMax());
+        List<Product> actual1 = productDao.search(requestWithPriceGreaterThan, limitMax());
+        List<Product> actual2 = productDao.search(requestWithPriceLessThan, limitMax());
 
         //Assert
         assertThat(union(actual1, actual2))
@@ -162,7 +162,7 @@ public abstract class ProductDaoTestCases {
             , 0
             , List.of(new SortData("name", Direction.ASC)));
 
-        List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), sortProductsByNameAsc);
+        List<Product> actual = productDao.search(new ProductSearchRequest(), sortProductsByNameAsc);
 
         //Assert
         assertThat(actual)
@@ -190,7 +190,7 @@ public abstract class ProductDaoTestCases {
             , 0
             , List.of(new SortData("price", Direction.DESC)));
 
-        List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), sortProductsByPriceDesc);
+        List<Product> actual = productDao.search(new ProductSearchRequest(), sortProductsByPriceDesc);
 
         //Assert
         assertThat(actual)
@@ -222,7 +222,7 @@ public abstract class ProductDaoTestCases {
             , offset
             , List.of());
 
-        List<Product> actual = productDao.searchProduct(new ProductSearchRequest(), sortPaging);
+        List<Product> actual = productDao.search(new ProductSearchRequest(), sortPaging);
 
         //Assert
         assertThat(actual)

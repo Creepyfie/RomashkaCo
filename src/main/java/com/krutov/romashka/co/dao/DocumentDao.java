@@ -1,8 +1,5 @@
 package com.krutov.romashka.co.dao;
 
-import com.krutov.romashka.co.model.Document;
-import com.krutov.romashka.co.model.Selling;
-
 import java.util.List;
 
 public interface DocumentDao <T> {
@@ -13,7 +10,7 @@ public interface DocumentDao <T> {
 
     void delete(long id);
 
-    T getById(long id);
+    T findById(long id);
 
-    List<T> getAll();
+    List<T> findByProductId(long productId);
 }

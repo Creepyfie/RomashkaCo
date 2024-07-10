@@ -1,0 +1,17 @@
+package com.krutov.romashka.co.service.validation;
+
+public enum ValidationErrorCode {
+    Product_NAME_IS_BLANK,
+    PRODUCT_NAME_SIZE,
+    PRICE_NEGATIVE,
+    PRICE_COMPARISON_SIGN,
+    DESCRIPTION_SIZE,
+    PRODUCT_NOT_FOUND,
+    SUPPLY_NAME_SIZE,
+    SUPPLY_AMOUNT,
+    SUPPLY_NOT_FOUND,
+    SELLING_NAME_SIZE,
+    SELLING_AMOUNT,
+    SELLING_AMOUNT_TOO_MUCH,
+    SELLING_NOT_FOUND,
+}

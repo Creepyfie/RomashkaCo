@@ -1,7 +1,7 @@
 package com.krutov.romashka.co.controller;
 
-import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.model.Selling;
+import com.krutov.romashka.co.service.SellingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -21,44 +21,29 @@ import java.util.List;
 @RestController
 @RequestMapping("/sale")
 @RequiredArgsConstructor
-@Validated
 public class SellingsController {
 
-    private final DocumentDao<Selling> sellingDao;
+    private final SellingService sellingService;
 
     @PostMapping
-    public Long createSupply(@RequestBody @Valid Selling editSale, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new StringIndexOutOfBoundsException();
-        } else {
-            return sellingDao.create(editSale);
-        }
+    public Long create(@RequestBody Selling selling) {
+        return sellingService.create(selling);
     }
 
     @GetMapping("/{id}")
-    public Selling getSupply(@PathVariable("id") long id) {
-        return sellingDao.getById(id);
-    }
-
-    @GetMapping
-    List<Selling> getAllProducts() {
-        return (List<Selling>) sellingDao.getAll();
+    public Selling getSelling(@PathVariable("id") long id) {
+        return sellingService.findById(id);
     }
 
     @PatchMapping
     public void updateProduct(@RequestParam(name = "id") long id,
-                              @RequestBody @Valid Selling editSale,
-                              BindingResult bindingResult) {
+                              @RequestBody Selling editSale) {
 
-        if (bindingResult.hasErrors()) {
-            throw new StringIndexOutOfBoundsException();
-        } else {
-            sellingDao.update(id, editSale);
-        }
+        sellingService.update(id, editSale);
     }
 
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable("id") long id) {
-        sellingDao.delete(id);
+        sellingService.delete(id);
     }
 }

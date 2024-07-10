@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -57,7 +58,7 @@ public class SqlSupplyDao implements DocumentDao <Supply> {
         String sql = """
             UPDATE supplies
             SET name = :name, product_id = :product_id, amount = :amount
-            WHERE id = id
+            WHERE id = :id
             """;
 
         jdbc.update(sql, params);
@@ -77,7 +78,7 @@ public class SqlSupplyDao implements DocumentDao <Supply> {
     }
 
     @Override
-    public Supply getById(long id) {
+    public Supply findById(long id) {
 
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", id);
@@ -93,36 +94,17 @@ public class SqlSupplyDao implements DocumentDao <Supply> {
     }
 
     @Override
-    public List<Supply> getAll() {
+    public List<Supply> findByProductId(long productId) {
+
+        Map<String, Long> params = Map.of("productId", productId);
+
         String sql = """
-            SELECT * FROM supplies
-            """;
-        return jdbc.query(sql, rowMapper);
+            SELECT * FROM supplies WHERE product_id = :productId""";
+
+        return jdbc.query(sql, params, rowMapper);
     }
 
-
-    public void getProductAmount(long id) {
-
-        long arrivedAmount = getAll().stream()
-            .filter(sup -> sup.getProductId() == id)
-            .reduce( 0L,(acc,supply) -> acc + supply.getAmount(),Long::sum);
-
-        long soldAmount = documentDao<Selling>.getAll()
-            .stream()
-            .filter(sel -> sel.getProductId() == id)
-            .reduce(0L, (acc, sel) -> acc + sel, Long::sum);
-
-        Product product = productDao.getById(id);
-        if (arrivedAmount > soldAmount && !product.getAvailable()) {
-            product.toBuilder().available(true).build();
-            productDao.update(id, product);
-        } else if (arrivedAmount < soldAmount && product.getAvailable()){
-            product.toBuilder().available(false).build();
-            productDao.update(id, product);
-        }
-    }
-
-    static class SupplyRowMapper implements RowMapper<com.krutov.romashka.co.model.Supply> {
+    public static class SupplyRowMapper implements RowMapper<com.krutov.romashka.co.model.Supply> {
         @Override
         public Supply mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Supply(

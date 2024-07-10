@@ -1,15 +1,13 @@
 package com.krutov.romashka.co.controller;
 
-import com.krutov.romashka.co.dao.ProductDao;
-import com.krutov.romashka.co.dto.ProductSearchRequest;
+import com.krutov.romashka.co.controller.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
+import com.krutov.romashka.co.service.ProductSearcher;
+import com.krutov.romashka.co.service.ProductService;
 import com.krutov.romashka.co.util.Direction;
 import com.krutov.romashka.co.util.ListData;
 import com.krutov.romashka.co.util.SortData;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,31 +24,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/prod")
 @RequiredArgsConstructor
-@Validated
 public class ProductController {
 
     /**
      * Слой сервисов не заводил, но понимаю, что он должен быть.
      */
-    private final ProductDao productDao;
+    private final ProductService productService;
+    private final ProductSearcher productSearcher;
 
     @PostMapping
-    public Long createProduct(@RequestBody @Valid Product editProduct, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new StringIndexOutOfBoundsException();
-        } else {
-            return productDao.create(editProduct);
-        }
+    public Long createProduct(@RequestBody Product editProduct) {
+        return productService.create(editProduct);
     }
 
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable("id") long id) {
-        return productDao.getById(id);
+        return productService.findById(id);
     }
 
     @GetMapping
     List<Product> getAllProducts(
-        @Valid ProductSearchRequest request,
+        ProductSearchRequest request,
         @RequestParam(name = "sortByNameDirection", required = false) Direction nameDirection,
         @RequestParam(name = "sortByPriceDirection", required = false) Direction priceDirection,
         @RequestParam(name = "limit", required = false, defaultValue = "1000000") Integer limit,
@@ -66,23 +60,17 @@ public class ProductController {
         }
         ListData listData = new ListData(limit, offset, sortDataList);
 
-        return productDao.searchProduct(request, listData);
+        return productSearcher.search(request, listData);
     }
 
     @PatchMapping
     public void updateProduct(@RequestParam(name = "id") long id,
-                              @RequestBody @Valid Product editProduct,
-                              BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            throw new StringIndexOutOfBoundsException();
-        } else {
-            productDao.update(id, editProduct);
-        }
+                              @RequestBody Product editProduct) {
+        productService.update(id, editProduct);
     }
 
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable("id") long id) {
-        productDao.delete(id);
+        productService.delete(id);
     }
 }

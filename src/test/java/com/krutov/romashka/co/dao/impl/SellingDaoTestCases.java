@@ -14,12 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class SellingDaoTestCases {
 
     abstract DocumentDao<Selling> getDao();
-
-    private DocumentDao<Selling> sellingDao = getDao();
-
     abstract ProductDao getProductDao();
+    abstract List<Selling> findAll();
 
-    private ProductDao productDao = getProductDao();
+    private final DocumentDao<Selling> sellingDao = getDao();
+    private final ProductDao productDao = getProductDao();
 
     @Test
     void create_supply() {
@@ -29,7 +28,7 @@ public abstract class SellingDaoTestCases {
 
         //Act
         sellingDao.create(expected);
-        List<Selling> actual = sellingDao.getAll();
+        List<Selling> actual = findAll();
 
         //Assert
         assertThat(actual)
@@ -53,7 +52,7 @@ public abstract class SellingDaoTestCases {
             .build();
 
         sellingDao.update(id, updatedProduct);
-        List<Selling> actual = sellingDao.getAll();
+        List<Selling> actual = findAll();
 
         //Assert
         assertThat(actual)
@@ -76,7 +75,7 @@ public abstract class SellingDaoTestCases {
 
         //Act
         sellingDao.delete(idToDelete);
-        List<Selling> actual = sellingDao.getAll();
+        List<Selling> actual = findAll();
 
         //Assert
         assertThat(actual)
@@ -98,41 +97,12 @@ public abstract class SellingDaoTestCases {
         sellingDao.create(otherSelling);
 
         //Act
-        Selling actual = sellingDao.getById(ownId);
+        Selling actual = sellingDao.findById(ownId);
 
         //Assert
         assertThat(actual)
             .usingRecursiveComparison()
             .ignoringFields("id")
             .isEqualTo(ownSelling);
-    }
-
-    @Test
-    void get_all_supplies() {
-        //Arrange
-        long productId = productDao.create(Instancio.create(Product.class));
-
-        Selling selling1 = Instancio.create(Selling.class).toBuilder().name("ownName1").productId(productId).build();
-        Selling selling2 = Instancio.create(Selling.class).toBuilder().name("ownName2").productId(productId).build();
-        Selling selling3 = Instancio.create(Selling.class).toBuilder().name("ownName3").productId(productId).build();
-        Selling selling4 = Instancio.create(Selling.class).toBuilder().name("ownName4").productId(productId).build();
-        Selling selling5 = Instancio.create(Selling.class).toBuilder().name("ownName5").productId(productId).build();
-
-        sellingDao.create(selling1);
-        sellingDao.create(selling2);
-        sellingDao.create(selling3);
-        sellingDao.create(selling4);
-        sellingDao.create(selling5);
-
-        //Act
-
-        List<Selling> actual = sellingDao.getAll();
-
-        //Assert
-        assertThat(actual)
-            .hasSize(5)
-            .usingRecursiveComparison()
-            .ignoringFields("id")
-            .isEqualTo(List.of(selling1, selling2, selling3, selling4, selling5));
     }
 }

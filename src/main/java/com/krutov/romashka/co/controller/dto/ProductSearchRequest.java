@@ -1,4 +1,4 @@
-package com.krutov.romashka.co.dto;
+package com.krutov.romashka.co.controller.dto;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Size;
@@ -15,13 +15,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ProductSearchRequest {
 
-    @Size(max = 255)
     private String name;
-
-    @DecimalMin("0")
     private BigDecimal price;
-
     private String priceSign;
-
     private Boolean available;
 }
