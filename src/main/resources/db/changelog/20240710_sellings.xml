@@ -17,7 +17,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="product_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="product_id" references="products(id)"/>
+                <constraints nullable="false" foreignKeyName="product_id" references="products(id)" deleteCascade="true"/>
             </column>
             <column name="amount" type="bigint" defaultValue="0" remarks="Кол-во проданного товара">
                 <constraints nullable="false" checkConstraint="amount &gt;= 0"/>

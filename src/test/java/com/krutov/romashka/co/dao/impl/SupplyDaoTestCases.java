@@ -1,6 +1,8 @@
 package com.krutov.romashka.co.dao.impl;
 
+import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.dao.SupplyDao;
+import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.model.Supply;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -15,10 +17,15 @@ public abstract class SupplyDaoTestCases {
 
     private SupplyDao supplyDao = getDao();
 
+    abstract ProductDao getProductDao();
+
+    private ProductDao productDao = getProductDao();
+
     @Test
     void create_supply() {
         //Arrange
-        Supply expected = Instancio.create(Supply.class);
+        long productId = productDao.create(Instancio.create(Product.class));
+        Supply expected = Instancio.create(Supply.class).toBuilder().productId(productId).build();
 
         //Act
         supplyDao.create(expected);
@@ -36,11 +43,13 @@ public abstract class SupplyDaoTestCases {
     @Test
     void update_supply() {
         //Arrange
-        Supply oldProduct = Instancio.create(Supply.class);
-        long id = supplyDao.create(oldProduct);
+        long productId = productDao.create(Instancio.create(Product.class));
+
+        Supply oldSupply = Instancio.create(Supply.class).toBuilder().productId(productId).build();
+        long id = supplyDao.create(oldSupply);
 
         //Act
-        Supply updatedProduct = oldProduct.toBuilder()
+        Supply updatedProduct = oldSupply.toBuilder()
             .name("updatedName")
             .build();
 
@@ -59,8 +68,11 @@ public abstract class SupplyDaoTestCases {
     @Test
     void delete_product() {
         //Arrange
-        Supply supplyToDelete = Instancio.create(Supply.class);
-        Supply remainingSuply = Instancio.create(Supply.class);
+        long productId = productDao.create(Instancio.create(Product.class));
+
+
+        Supply supplyToDelete = Instancio.create(Supply.class).toBuilder().productId(productId).build();
+        Supply remainingSuply = Instancio.create(Supply.class).toBuilder().productId(productId).build();
         long idToDelete = supplyDao.create(supplyToDelete);
         supplyDao.create(remainingSuply);
 
@@ -80,8 +92,10 @@ public abstract class SupplyDaoTestCases {
     @Test
     void get_supply_by_id() {
         //Arrange
-        Supply ownSupply = Instancio.create(Supply.class);
-        Supply otherSupply = Instancio.create(Supply.class);
+        long productId = productDao.create(Instancio.create(Product.class));
+
+        Supply ownSupply = Instancio.create(Supply.class).toBuilder().productId(productId).build();
+        Supply otherSupply = Instancio.create(Supply.class).toBuilder().productId(productId).build();
         long ownId = supplyDao.create(ownSupply);
         supplyDao.create(otherSupply);
 
@@ -98,11 +112,13 @@ public abstract class SupplyDaoTestCases {
     @Test
     void get_all_supplies() {
         //Arrange
-        Supply supply1 = Instancio.create(Supply.class).toBuilder().name("ownName1").build();
-        Supply supply2 = Instancio.create(Supply.class).toBuilder().name("ownName2").build();
-        Supply supply3 = Instancio.create(Supply.class).toBuilder().name("ownName3").build();
-        Supply supply4 = Instancio.create(Supply.class).toBuilder().name("ownName4").build();
-        Supply supply5 = Instancio.create(Supply.class).toBuilder().name("ownName5").build();
+        long productId = productDao.create(Instancio.create(Product.class));
+
+        Supply supply1 = Instancio.create(Supply.class).toBuilder().name("ownName1").productId(productId).build();
+        Supply supply2 = Instancio.create(Supply.class).toBuilder().name("ownName2").productId(productId).build();
+        Supply supply3 = Instancio.create(Supply.class).toBuilder().name("ownName3").productId(productId).build();
+        Supply supply4 = Instancio.create(Supply.class).toBuilder().name("ownName4").productId(productId).build();
+        Supply supply5 = Instancio.create(Supply.class).toBuilder().name("ownName5").productId(productId).build();
 
         supplyDao.create(supply1);
         supplyDao.create(supply2);

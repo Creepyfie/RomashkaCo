@@ -1,6 +1,8 @@
 package com.krutov.romashka.co.dao.impl;
 
+import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.dao.SellingDao;
+import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.model.Selling;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -15,10 +17,15 @@ public abstract class SellingDaoTestCases {
 
     private SellingDao sellingDao = getDao();
 
+    abstract ProductDao getProductDao();
+
+    private ProductDao productDao = getProductDao();
+
     @Test
     void create_supply() {
         //Arrange
-        Selling expected = Instancio.create(Selling.class);
+        long productId = productDao.create(Instancio.create(Product.class));
+        Selling expected = Instancio.create(Selling.class).toBuilder().productId(productId).build();
 
         //Act
         sellingDao.create(expected);
@@ -36,7 +43,8 @@ public abstract class SellingDaoTestCases {
     @Test
     void update_supply() {
         //Arrange
-        Selling oldProduct = Instancio.create(Selling.class);
+        long productId = productDao.create(Instancio.create(Product.class));
+        Selling oldProduct = Instancio.create(Selling.class).toBuilder().productId(productId).build();
         long id = sellingDao.create(oldProduct);
 
         //Act
@@ -57,10 +65,12 @@ public abstract class SellingDaoTestCases {
     }
 
     @Test
-    void delete_product() {
+    void delete_supply() {
         //Arrange
-        Selling sellingToDelete = Instancio.create(Selling.class);
-        Selling remainingSelling = Instancio.create(Selling.class);
+        long productId = productDao.create(Instancio.create(Product.class));
+
+        Selling sellingToDelete = Instancio.create(Selling.class).toBuilder().productId(productId).build();
+        Selling remainingSelling = Instancio.create(Selling.class).toBuilder().productId(productId).build();
         long idToDelete = sellingDao.create(sellingToDelete);
         sellingDao.create(remainingSelling);
 
@@ -80,8 +90,10 @@ public abstract class SellingDaoTestCases {
     @Test
     void get_supply_by_id() {
         //Arrange
-        Selling ownSelling = Instancio.create(Selling.class);
-        Selling otherSelling = Instancio.create(Selling.class);
+        long productId = productDao.create(Instancio.create(Product.class));
+
+        Selling ownSelling = Instancio.create(Selling.class).toBuilder().productId(productId).build();
+        Selling otherSelling = Instancio.create(Selling.class).toBuilder().productId(productId).build();
         long ownId = sellingDao.create(ownSelling);
         sellingDao.create(otherSelling);
 
@@ -98,11 +110,13 @@ public abstract class SellingDaoTestCases {
     @Test
     void get_all_supplies() {
         //Arrange
-        Selling selling1 = Instancio.create(Selling.class).toBuilder().name("ownName1").build();
-        Selling selling2 = Instancio.create(Selling.class).toBuilder().name("ownName2").build();
-        Selling selling3 = Instancio.create(Selling.class).toBuilder().name("ownName3").build();
-        Selling selling4 = Instancio.create(Selling.class).toBuilder().name("ownName4").build();
-        Selling selling5 = Instancio.create(Selling.class).toBuilder().name("ownName5").build();
+        long productId = productDao.create(Instancio.create(Product.class));
+
+        Selling selling1 = Instancio.create(Selling.class).toBuilder().name("ownName1").productId(productId).build();
+        Selling selling2 = Instancio.create(Selling.class).toBuilder().name("ownName2").productId(productId).build();
+        Selling selling3 = Instancio.create(Selling.class).toBuilder().name("ownName3").productId(productId).build();
+        Selling selling4 = Instancio.create(Selling.class).toBuilder().name("ownName4").productId(productId).build();
+        Selling selling5 = Instancio.create(Selling.class).toBuilder().name("ownName5").productId(productId).build();
 
         sellingDao.create(selling1);
         sellingDao.create(selling2);
