@@ -44,7 +44,7 @@ public class ProductSearcher {
 
     private static void validatePriceSign(ProductSearchRequest request, List<ValidationError> errors) {
         if (!Set.of("lt", "gt", "eq").contains(request.getPriceSign())) {
-            errors.add(error(PRICE_COMPARISON_SIGN));
+            errors.add(error(PRICE_COMPARISON_SIGN, "Wrong price comparison sign. Might be lt gt or eq"));
         }
     }
 }

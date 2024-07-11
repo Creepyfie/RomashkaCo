@@ -34,7 +34,7 @@ public class SellingService {
         Long productId = selling.getProductId();
         Product product = productService.findById(productId);
         if (product == null) {
-            throw new ValidationException(error(PRODUCT_NOT_FOUND));
+            throw new ValidationException(error(PRODUCT_NOT_FOUND, "Product with such productID is not exist"));
         }
 
         validateTotalAvailable(selling.getAmount(), productId);
@@ -49,7 +49,7 @@ public class SellingService {
 
         Selling oldSelling = sellingDao.findById(id);
         if (oldSelling == null) {
-            throw new ValidationException(error(SELLING_NOT_FOUND));
+            throw new ValidationException(error(SELLING_NOT_FOUND, "Selling with such ID is not exist"));
         }
 
         long currentSoldProductAmount = newSelling.getAmount() - oldSelling.getAmount();
@@ -95,7 +95,7 @@ public class SellingService {
 
         long availableProductCount = totalSuppliedProductCount - totalSoldProductCount - currentSoldProductsAmount;
         if (availableProductCount < 0) {
-            throw new ValidationException(error(SELLING_AMOUNT_TOO_MUCH));
+            throw new ValidationException(error(SELLING_AMOUNT_TOO_MUCH, "Selling amount is more than available product amount"));
         }
     }
 
@@ -158,7 +158,7 @@ public class SellingService {
 
         String name = selling.getName();
         if (name != null && name.length() > 255) {
-            errors.add(error(SELLING_NAME_SIZE));
+            errors.add(error(SELLING_NAME_SIZE, "Selling Name must be less then 256 symbols"));
         }
 
         BigDecimal totalPrice = selling.getTotalPrice();
@@ -166,7 +166,7 @@ public class SellingService {
 
         Long amount = selling.getAmount();
         if (amount <= 0) {
-            errors.add(error(SELLING_AMOUNT));
+            errors.add(error(SELLING_AMOUNT, "Selling Amount must be more than 0"));
         }
 
         if (!errors.isEmpty()) {

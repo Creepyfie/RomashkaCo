@@ -13,19 +13,19 @@ public final class ProductValidator {
         if (isBlank(name)) {
             errors.add(error(Product_NAME_IS_BLANK));
         } else if (name.length() > 255) {
-            errors.add(error(PRODUCT_NAME_SIZE, "123"));
+            errors.add(error(PRODUCT_NAME_SIZE, "Wrong Name Size (more than 255 characters)"));
         }
     }
 
     public static void validatePrice(BigDecimal price, List<ValidationError> errors) {
         if (price != null && price.compareTo(BigDecimal.ZERO) < 0) {
-            errors.add(error(PRICE_NEGATIVE));
+            errors.add(error(PRICE_NEGATIVE, "Price is negative (< 0)"));
         }
     }
 
     public static void validateDescription(String description, List<ValidationError> errors) {
         if (description != null && description.length() > 4096) {
-            errors.add(error(DESCRIPTION_SIZE));
+            errors.add(error(DESCRIPTION_SIZE,"Description Size is more than 4096 symbols"));
         }
     }
 }

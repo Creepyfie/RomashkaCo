@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.krutov.romashka.co.service.validation.ProductValidator.*;
+import static com.krutov.romashka.co.service.validation.ValidationError.error;
+import static com.krutov.romashka.co.service.validation.ValidationErrorCode.PRODUCT_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -33,9 +35,9 @@ public class ProductService {
         validateProduct(product);
 
         Product existingProduct = productDao.findById(id);
-        if (existingProduct == null)
-            throw new IllegalStateException("Could not find product with id: %d".formatted(id));
-
+        if (existingProduct == null) {
+            throw new ValidationException(error(PRODUCT_NOT_FOUND, "Product with such productID is not exist"));
+        }
         productDao.update(id, product);
     }
 

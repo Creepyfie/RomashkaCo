@@ -31,7 +31,7 @@ public class SupplyService {
 
         Product product = productService.findById(supply.getProductId());
         if (product == null) {
-            throw new ValidationException(error(PRODUCT_NOT_FOUND));
+            throw new ValidationException(error(PRODUCT_NOT_FOUND, "Product with such productID is not exist"));
         }
 
         productService.update(product.getId(), product.withAvailable(true));
@@ -45,7 +45,7 @@ public class SupplyService {
 
         Supply oldSupply = supplyDao.findById(id);
         if (oldSupply == null) {
-            throw new ValidationException(error(SUPPLY_NOT_FOUND, String.valueOf(id)));
+            throw new ValidationException(error(SUPPLY_NOT_FOUND,"Supply with such ID not found: " + String.valueOf(id)));
         }
 
         Product product = productService.findById(newSupply.getProductId());
@@ -103,12 +103,12 @@ public class SupplyService {
 
         String name = supply.getName();
         if (name != null && name.length() > 255) {
-            errors.add(error(SUPPLY_NAME_SIZE));
+            errors.add(error(SUPPLY_NAME_SIZE, "Supply Name must be less then 256 symbols"));
         }
 
         Long amount = supply.getAmount();
         if (amount == null || amount <= 0) {
-            errors.add(error(SUPPLY_AMOUNT));
+            errors.add(error(SUPPLY_AMOUNT, "Supply Amount must be more than 0"));
         }
 
         if (!errors.isEmpty()) {

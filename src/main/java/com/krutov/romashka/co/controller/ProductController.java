@@ -26,9 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
 
-    /**
-     * Слой сервисов не заводил, но понимаю, что он должен быть.
-     */
     private final ProductService productService;
     private final ProductSearcher productSearcher;
 
