@@ -1,5 +1,7 @@
 package com.krutov.romashka.co;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,12 +15,16 @@ import static java.util.Collections.emptyMap;
 
 @Testcontainers
 @SpringBootTest
-@AutoConfigureMockMvc
 public abstract class IntegrationTests {
 
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15");
+
+    @BeforeAll
+    static void beforeAll() {
+        postgreSQLContainer.start();
+    }
 
     @Autowired
     protected NamedParameterJdbcOperations jdbcOperations;

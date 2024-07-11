@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.With;
 
 import java.math.BigDecimal;
 
 @Data
+@With
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
