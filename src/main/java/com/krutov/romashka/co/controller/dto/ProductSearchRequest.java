@@ -1,7 +1,5 @@
 package com.krutov.romashka.co.controller.dto;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

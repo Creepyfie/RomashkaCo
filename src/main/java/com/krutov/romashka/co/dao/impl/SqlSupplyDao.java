@@ -1,8 +1,6 @@
 package com.krutov.romashka.co.dao.impl;
 
 import com.krutov.romashka.co.dao.DocumentDao;
-import com.krutov.romashka.co.model.Product;
-import com.krutov.romashka.co.model.Selling;
 import com.krutov.romashka.co.model.Supply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;

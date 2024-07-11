@@ -1,8 +1,8 @@
 package com.krutov.romashka.co.dao.impl;
 
+import com.krutov.romashka.co.controller.dto.ProductSearchRequest;
 import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.dao.util.SqlFilters;
-import com.krutov.romashka.co.controller.dto.ProductSearchRequest;
 import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.util.ListData;
 import lombok.RequiredArgsConstructor;

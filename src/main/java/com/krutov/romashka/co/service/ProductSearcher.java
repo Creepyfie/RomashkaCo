@@ -1,7 +1,7 @@
 package com.krutov.romashka.co.service;
 
-import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.controller.dto.ProductSearchRequest;
+import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.service.validation.ValidationError;
 import com.krutov.romashka.co.service.validation.ValidationException;
@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.krutov.romashka.co.service.validation.ValidationError.*;
-import static com.krutov.romashka.co.service.validation.ValidationErrorCode.*;
-import static com.krutov.romashka.co.service.validation.ProductValidator.*;
+import static com.krutov.romashka.co.service.validation.ProductValidator.validatePrice;
 import static com.krutov.romashka.co.service.validation.ProductValidator.validateProductName;
+import static com.krutov.romashka.co.service.validation.ValidationError.error;
+import static com.krutov.romashka.co.service.validation.ValidationErrorCode.PRICE_COMPARISON_SIGN;
 
 @Service
 @RequiredArgsConstructor

@@ -5,7 +5,6 @@ import java.util.List;
 
 import static com.krutov.romashka.co.service.validation.ValidationError.error;
 import static com.krutov.romashka.co.service.validation.ValidationErrorCode.*;
-import static com.krutov.romashka.co.service.validation.ValidationErrorCode.PRODUCT_NAME_SIZE;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public final class ProductValidator {

@@ -1,7 +1,6 @@
 package com.krutov.romashka.co.service;
 
 import com.krutov.romashka.co.dao.DocumentDao;
-import com.krutov.romashka.co.dao.impl.SqlSellingDao;
 import com.krutov.romashka.co.model.Product;
 import com.krutov.romashka.co.model.Selling;
 import com.krutov.romashka.co.model.Supply;
@@ -15,8 +14,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.krutov.romashka.co.service.validation.ProductValidator.*;
-import static com.krutov.romashka.co.service.validation.ValidationError.*;
+import static com.krutov.romashka.co.service.validation.ProductValidator.validatePrice;
+import static com.krutov.romashka.co.service.validation.ValidationError.error;
 import static com.krutov.romashka.co.service.validation.ValidationErrorCode.*;
 
 @Service
