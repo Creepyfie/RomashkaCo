@@ -1,6 +1,7 @@
 package com.krutov.dao.Impl;
 
 import com.krutov.romashka.co.dao.DocumentDao;
+import com.krutov.romashka.co.model.Selling;
 import com.krutov.romashka.co.model.Supply;
 import org.instancio.Instancio;
 
