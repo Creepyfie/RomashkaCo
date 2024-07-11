@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.util.List;
 import java.util.Map;
 
-import static com.krutov.romashka.co.dao.impl.SqlSellingDao.*;
+import static com.krutov.romashka.co.dao.impl.SqlSellingDao.SellingRowMapper;
 
 /**
  * Тесты прогоняются на две реализации: InMemDao и SqlDao

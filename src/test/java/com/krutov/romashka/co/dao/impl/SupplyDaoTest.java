@@ -5,7 +5,6 @@ import com.krutov.dao.Impl.InMemorySupplyDao;
 import com.krutov.romashka.co.IntegrationTests;
 import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.dao.ProductDao;
-import com.krutov.romashka.co.model.Selling;
 import com.krutov.romashka.co.model.Supply;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.util.List;
 import java.util.Map;
 
-import static com.krutov.romashka.co.dao.impl.SqlSupplyDao.*;
+import static com.krutov.romashka.co.dao.impl.SqlSupplyDao.SupplyRowMapper;
 
 /**
  * Тесты прогоняются на две реализации: InMemDao и SqlDao

@@ -57,7 +57,7 @@ public class SqlSellingDao implements DocumentDao <Selling> {
         String sql = """
             UPDATE sellings
             SET name = :name, product_id = :product_id, amount = :amount, price = :price
-            WHERE id = id
+            WHERE id = :id
             """;
 
         jdbc.update(sql, params);
