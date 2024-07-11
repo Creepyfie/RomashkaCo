@@ -37,7 +37,7 @@ public class SupplyDaoTest extends IntegrationTests {
         @BeforeEach
         @AfterEach
         void setup() {
-            clearTables("sellings", "products");
+            clearTables("supplies", "products");
         }
 
         @Override

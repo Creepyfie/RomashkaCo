@@ -3,6 +3,7 @@ package com.krutov.romashka.co.dao.impl;
 import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.model.Product;
+import com.krutov.romashka.co.model.Selling;
 import com.krutov.romashka.co.model.Supply;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -43,16 +44,15 @@ public abstract class SupplyDaoTestCases {
     void update_supply() {
         //Arrange
         long productId = productDao.create(Instancio.create(Product.class));
-
-        Supply oldSupply = Instancio.create(Supply.class).toBuilder().productId(productId).build();
-        long id = supplyDao.create(oldSupply);
+        Supply oldProduct = Instancio.create(Supply.class).toBuilder().productId(productId).build();
+        long id = supplyDao.create(oldProduct);
 
         //Act
-        Supply updatedProduct = oldSupply.toBuilder()
+        Supply updatedSupply = oldProduct.toBuilder()
             .name("updatedName")
             .build();
 
-        supplyDao.update(id, updatedProduct);
+        supplyDao.update(id, updatedSupply);
         List<Supply> actual = findAll();
 
         //Assert
@@ -61,7 +61,7 @@ public abstract class SupplyDaoTestCases {
             .first()
             .usingRecursiveComparison()
             .ignoringFields("id")
-            .isEqualTo(updatedProduct);
+            .isEqualTo(updatedSupply);
     }
 
     @Test

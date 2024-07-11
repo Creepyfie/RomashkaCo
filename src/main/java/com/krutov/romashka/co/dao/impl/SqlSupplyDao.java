@@ -45,13 +45,11 @@ public class SqlSupplyDao implements DocumentDao <Supply> {
     @Override
     public void update(long id, Supply updateSupply) {
 
-        com.krutov.romashka.co.model.Supply supply = (com.krutov.romashka.co.model.Supply) updateSupply;
-
         SqlParameterSource params = new MapSqlParameterSource()
             .addValue("id", id)
-            .addValue("name", supply.getName())
-            .addValue("product_id", supply.getProductId())
-            .addValue("amount", supply.getAmount());
+            .addValue("name", updateSupply.getName())
+            .addValue("product_id", updateSupply.getProductId())
+            .addValue("amount", updateSupply.getAmount());
 
         String sql = """
             UPDATE supplies

@@ -37,7 +37,7 @@ public class SellingDaoTest extends IntegrationTests {
         @BeforeEach
         @AfterEach
         void setup() {
-            clearTables("supplies", "products");
+            clearTables("sellings", "products");
         }
 
         @Override
