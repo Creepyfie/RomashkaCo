@@ -13,13 +13,13 @@ public final class ProductValidator {
         if (isBlank(name)) {
             errors.add(error(Product_NAME_IS_BLANK));
         } else if (name.length() > 255) {
-            errors.add(error(PRODUCT_NAME_SIZE, "Wrong Name Size (more than 255 characters)"));
+            errors.add(error(PRODUCT_NAME_SIZE, "Name length must be less than 255 characters)"));
         }
     }
 
     public static void validatePrice(BigDecimal price, List<ValidationError> errors) {
         if (price != null && price.compareTo(BigDecimal.ZERO) < 0) {
-            errors.add(error(PRICE_NEGATIVE, "Price is negative (< 0)"));
+            errors.add(error(PRICE_NEGATIVE, "Price must be positive (> 0"));
         }
     }
 
