@@ -13,14 +13,14 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="text(255)"  remarks="Название товара">
+            <column name="name" type="text"  remarks="Название товара">
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="text(4096)" remarks="Описание товара">
                 <constraints nullable="true"/>
             </column>
             <column name="price" type="numeric" defaultValueNumeric="0" remarks="Стоимость товара">
-                <constraints nullable="false" checkConstraint="price &gt;= 0"/>
+                <constraints nullable="false"/>
             </column>
             <column name="available" type="boolean" defaultValueBoolean="true" remarks="Наличие товара">
                 <constraints nullable="false"/>
