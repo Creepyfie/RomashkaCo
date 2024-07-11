@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  postgresdb:
+  postgres:
     container_name: 'romaska_db'
     image: postgres:16.1-alpine
     environment:
@@ -16,11 +16,13 @@ services:
   app:
     build: ./
     depends_on:
-      - postgresdb
+      - postgres
     container_name: 'romaska-app'
     environment:
-      POSTGRES_HOST: postgresdb
+      POSTGRES_HOST: postgres
       POSTGRES_NAME: romashka_co
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - 8080:8080
 
