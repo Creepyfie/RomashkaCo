@@ -57,7 +57,7 @@ public class SqlProductDao implements ProductDao {
         String sql = """
                 UPDATE products
                 SET name = :name, description = :description, price = :price, available = :available
-                WHERE id = id
+                WHERE id = :id
                 """;
         jdbc.update(sql, params);
     }
