@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
-public class SqlSellingDao implements DocumentDao <Selling> {
+public class SqlSellingDao implements DocumentDao<Selling> {
 
     private final RowMapper<Selling> rowMapper = new SellingRowMapper();
     private final NamedParameterJdbcOperations jdbc;

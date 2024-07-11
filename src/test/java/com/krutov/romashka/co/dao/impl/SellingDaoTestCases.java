@@ -14,7 +14,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class SellingDaoTestCases {
 
     abstract DocumentDao<Selling> getDao();
+
     abstract ProductDao getProductDao();
+
     abstract List<Selling> findAll();
 
     private final DocumentDao<Selling> sellingDao = getDao();

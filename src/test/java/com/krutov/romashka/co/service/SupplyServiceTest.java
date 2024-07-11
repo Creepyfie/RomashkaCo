@@ -32,7 +32,7 @@ class SupplyServiceTest {
 
     @Test
     void create__when_product_exists_and_supply_does_not_exists() {
-       // Arrange
+        // Arrange
         Product product = Instancio.create(Product.class);
         long productId = productService.create(product);
         Supply supply = Instancio.create(Supply.class).withProductId(productId);

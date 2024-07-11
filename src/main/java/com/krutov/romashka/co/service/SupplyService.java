@@ -45,7 +45,7 @@ public class SupplyService {
 
         Supply oldSupply = supplyDao.findById(id);
         if (oldSupply == null) {
-            throw new ValidationException(error(SUPPLY_NOT_FOUND,"Supply with such ID not found: " + String.valueOf(id)));
+            throw new ValidationException(error(SUPPLY_NOT_FOUND, "Supply with such ID not found: " + String.valueOf(id)));
         }
 
         Product product = productService.findById(newSupply.getProductId());

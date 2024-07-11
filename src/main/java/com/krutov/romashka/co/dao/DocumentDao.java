@@ -2,7 +2,7 @@ package com.krutov.romashka.co.dao;
 
 import java.util.List;
 
-public interface DocumentDao <T> {
+public interface DocumentDao<T> {
 
     long create(T document);
 

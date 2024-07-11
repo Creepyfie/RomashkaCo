@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
-public class SqlSupplyDao implements DocumentDao <Supply> {
+public class SqlSupplyDao implements DocumentDao<Supply> {
 
     private final NamedParameterJdbcOperations jdbc;
     private final RowMapper<com.krutov.romashka.co.model.Supply> rowMapper = new SupplyRowMapper();

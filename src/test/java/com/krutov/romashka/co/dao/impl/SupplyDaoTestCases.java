@@ -3,7 +3,6 @@ package com.krutov.romashka.co.dao.impl;
 import com.krutov.romashka.co.dao.DocumentDao;
 import com.krutov.romashka.co.dao.ProductDao;
 import com.krutov.romashka.co.model.Product;
-import com.krutov.romashka.co.model.Selling;
 import com.krutov.romashka.co.model.Supply;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class SupplyDaoTestCases {
 
     abstract DocumentDao<Supply> getDao();
+
     abstract ProductDao getProductDao();
+
     abstract List<Supply> findAll();
 
     private final DocumentDao<Supply> supplyDao = getDao();

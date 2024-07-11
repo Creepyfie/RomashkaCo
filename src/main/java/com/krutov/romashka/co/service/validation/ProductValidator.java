@@ -25,7 +25,7 @@ public final class ProductValidator {
 
     public static void validateDescription(String description, List<ValidationError> errors) {
         if (description != null && description.length() > 4096) {
-            errors.add(error(DESCRIPTION_SIZE,"Description Size is more than 4096 symbols"));
+            errors.add(error(DESCRIPTION_SIZE, "Description Size is more than 4096 symbols"));
         }
     }
 }

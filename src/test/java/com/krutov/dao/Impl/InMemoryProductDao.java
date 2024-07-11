@@ -20,9 +20,9 @@ public class InMemoryProductDao implements ProductDao {
     @Override
     public long create(Product product) {
 
-        Long id = Instancio.create(Long.class);
-        products.put(id, product.toBuilder().id(id).build());
-        return id;
+        Long productId = Instancio.create(Long.class);
+        products.put(productId, product.toBuilder().id(productId).build());
+        return productId;
     }
 
     @Override
